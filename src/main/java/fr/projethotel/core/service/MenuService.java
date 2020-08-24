@@ -11,7 +11,7 @@ public class MenuService {
             System.out.println("----------------------------------------------------");
             System.out.println("------------ Gestion Clients -----------------------");
             System.out.println("Ajouter un client          : tapez 3");
-            System.out.println("Afficher un client           : tapez 4");
+            System.out.println("Afficher un client         : tapez 4");
             System.out.println("----------------------------------------------------");
             System.out.println("------------ Gestion des Réservations --------------");
             System.out.println("Création de la Reservation      : tapez 5");
