@@ -1,14 +1,15 @@
 package fr.projethotel.core.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 public class Client {
     Integer id;
     String nom;
     String prenom;
-    Date dateNaissance;
+    LocalDate dateNaissance;
 
     public Client() {
     }
@@ -38,11 +39,11 @@ public class Client {
         this.prenom = prenom;
     }
     @Column(name = "DATE_NAISSANCE")
-    public Date getDateNaissance() {
+    public LocalDate getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 }
