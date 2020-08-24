@@ -1,6 +1,6 @@
 package fr.projethotel.core.service;
 
-import fr.projethotel.core.DAO.HotelDAOImpl;
+import fr.projethotel.core.dao.HotelDAOImpl;
 import fr.projethotel.core.entity.Hotel;
 
 

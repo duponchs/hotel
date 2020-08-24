@@ -1,18 +1,18 @@
-package fr.projethotel.core.DAO;
+package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
-import fr.projethotel.core.entity.Client;
+import fr.projethotel.core.entity.Hotel;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class ClientDAOImpl {
-    public void create(Client client) {
+public class HotelDAOImpl {
+    public void create(Hotel hotel) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(client);
+            session.persist(hotel);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

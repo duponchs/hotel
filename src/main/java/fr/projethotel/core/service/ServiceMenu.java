@@ -1,6 +1,6 @@
 package fr.projethotel.core.service;
 
-public class MenuService {
+public class ServiceMenu {
 
     public static void menu() {
             System.out.println("--------- Gestion Transit'Air ----------------------");

@@ -1,6 +1,5 @@
 package fr.projethotel.core;
 
-import fr.projethotel.core.service.MenuService;
 import fr.projethotel.core.service.ServiceClient;
 
 public class Main {

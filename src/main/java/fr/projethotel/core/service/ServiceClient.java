@@ -1,6 +1,6 @@
 package fr.projethotel.core.service;
 
-import fr.projethotel.core.DAO.ClientDAOImpl;
+import fr.projethotel.core.dao.ClientDAOImpl;
 import fr.projethotel.core.entity.Client;
 
 import java.time.LocalDate;
