@@ -86,7 +86,7 @@ public class Reservation {
     }
 
 
-    @ManyToMany(mappedBy = "chambres")
+    @ManyToMany(mappedBy = "reservations")
     public List<Chambre> getChambres() {
         return chambres;
     }
