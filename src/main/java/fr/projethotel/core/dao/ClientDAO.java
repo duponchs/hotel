@@ -4,13 +4,16 @@ import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.entity.Client;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ClientDAO {
+
+    static final Logger logger = LogManager.getLogger("ClientDAO");
+
     public void create(Client client) {
-        Session session = null;
         Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(client);
             transaction.commit();
@@ -18,11 +21,7 @@ public class ClientDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            logger.fatal(e.getMessage());
         }
     }
 }
