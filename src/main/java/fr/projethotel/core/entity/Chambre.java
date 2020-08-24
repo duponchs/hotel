@@ -33,7 +33,7 @@ public class Chambre {
         this.archiver = archiver;
     }
 
-
+    @Column(name = "NB_PERSONNE_MAX")
     public Integer getNbPersonneMax() {
         return nbPersonneMax;
     }
