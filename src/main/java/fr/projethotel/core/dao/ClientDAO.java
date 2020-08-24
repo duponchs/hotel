@@ -5,7 +5,7 @@ import fr.projethotel.core.entity.Client;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class ClientDAOImpl {
+public class ClientDAO {
     public void create(Client client) {
         Session session = null;
         Transaction transaction = null;

@@ -1,6 +1,6 @@
 package fr.projethotel.core.service;
 
-import fr.projethotel.core.dao.ClientDAOImpl;
+import fr.projethotel.core.dao.ClientDAO;
 import fr.projethotel.core.entity.Client;
 
 import java.time.LocalDate;
@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class ServiceClient {
 
-    private ClientDAOImpl clientDAO;
+    private ClientDAO clientDAO;
     public ServiceClient(){
-        this.clientDAO = new ClientDAOImpl();
+        this.clientDAO = new ClientDAO();
     }
     public  void  ajouterClient(){
         Scanner clavier = new Scanner(System.in);

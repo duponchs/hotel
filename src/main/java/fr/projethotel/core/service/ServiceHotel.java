@@ -1,6 +1,6 @@
 package fr.projethotel.core.service;
 
-import fr.projethotel.core.dao.HotelDAOImpl;
+import fr.projethotel.core.dao.HotelDAO;
 import fr.projethotel.core.entity.Hotel;
 
 
@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class ServiceHotel {
 
-    private HotelDAOImpl hotelDAO;
+    private HotelDAO hotelDAO;
     public ServiceHotel(){
-        this.hotelDAO = new  HotelDAOImpl();
+        this.hotelDAO = new HotelDAO();
     }
 
     public void ajouterHotel(){
