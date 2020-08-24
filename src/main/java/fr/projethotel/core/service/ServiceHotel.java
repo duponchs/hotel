@@ -10,7 +10,7 @@ public class ServiceHotel {
 
     private HotelDAOImpl hotelDAO;
     public ServiceHotel(){
-        this.hotelDAO = new HotelDAOImpl();
+        this.hotelDAO = new  HotelDAOImpl();
     }
 
     public void ajouterHotel(){
