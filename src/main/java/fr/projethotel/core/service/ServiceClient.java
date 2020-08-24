@@ -18,10 +18,10 @@ public class ServiceClient {
         String nom = clavier.nextLine();
         System.out.println("Quel est le prenom du client  ?");
         String prenom = clavier.nextLine();
-        System.out.println("Quel est la date de naissance du client  ? (YYYY/MM/JJ) ");
+        System.out.println("Quel est la date de naissance du client  ? (JJ/MM/YYYY) ");
         String dateString = clavier.nextLine();
 
-        LocalDate date = LocalDate.of(Integer.valueOf(dateString.substring(0,5)),Integer.valueOf(dateString.substring(0,5)),Integer.valueOf(dateString.substring(0,5)));
+        LocalDate date = LocalDate.of(Integer.valueOf(dateString.substring(6,10)),Integer.valueOf(dateString.substring(3,5)),Integer.valueOf(dateString.substring(0,2)));
 
 
         Client client = new Client();
@@ -30,6 +30,6 @@ public class ServiceClient {
         client.setDateNaissance(date);
 
         clientDAO.create(client);
-        System.out.println("le joueur a été créé, son identifiant est "+client.getId());
+        System.out.println("le client a été créé, son identifiant est "+client.getId());
     }
 }

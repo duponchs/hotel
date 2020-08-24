@@ -30,11 +30,11 @@
         <property name="cache.provider_class">org.hibernate.cache.internal.NoCachingRegionFactory</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">update</property>
 
 
 		<!-- Enities to map -->
-        <!--<mapping class="fr.projethotel.core.entity.XXX"/>-->
+        <mapping class="fr.projethotel.core.entity.Client"/>
 
 
     </session-factory>
