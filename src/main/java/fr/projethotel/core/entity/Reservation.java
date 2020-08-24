@@ -2,21 +2,23 @@ package fr.projethotel.core.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Reservation {
-    private int id;
-    private int nbPersonne;
+    private Integer id;
+    private Integer nbPersonne;
     private LocalDate dateNuitee;
-    private float montant;
-    private int numeroCb;
-    private char etat;
+    private Float montant;
+    private Integer numeroCb;
+    private String etat;
     private Client client;
+    private List<Chambre> chambres;
 
     public Reservation() {
     }
 
-    public Reservation(int nbPersonne, LocalDate dateNuitee, float montant, int numeroCb, char etat, Client client ) {
+    public Reservation(Integer nbPersonne, LocalDate dateNuitee, Float montant, Integer numeroCb, String etat, Client client ) {
         this.nbPersonne = nbPersonne;
         this.dateNuitee = dateNuitee;
         this.montant = montant;
@@ -27,24 +29,24 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    @Column
-    public int getNbPersonne() {
+    @Column(name = "NOMBRE_PERSONNES")
+    public Integer getNbPersonne() {
         return nbPersonne;
     }
 
-    public void setNbPersonne(int nbPersonne) {
+    public void setNbPersonne(Integer nbPersonne) {
         this.nbPersonne = nbPersonne;
     }
 
-    @Column
+    @Column(name = "DATE_NUITEE")
     public LocalDate getDateNuitee() {
         return dateNuitee;
     }
@@ -53,26 +55,26 @@ public class Reservation {
         this.dateNuitee = dateNuitee;
     }
 
-    @Column
-    public float getMontant() {
+    @Column(name = "MONTANT_NUITEE")
+    public Float getMontant() {
         return montant;
     }
 
-    public void setMontant(float montant) {this.montant = montant;}
+    public void setMontant(Float montant) {this.montant = montant;}
 
-    @Column
-    public int getNumeroCb() {
+    @Column(name = "NUMERO_CB")
+    public Integer getNumeroCb() {
         return numeroCb;
     }
 
-    public void setNumeroCB(int numeroCb) {
+    public void setNumeroCb(Integer numeroCb) {
         this.numeroCb = numeroCb;
     }
 
-    @Column
-    public char  getEtat(){ return etat;}
+    @Column(name = "ETAT")
+    public String  getEtat(){ return etat;}
 
-    public void setEtat(char etat) { this.etat = etat;}
+    public void setEtat(String etat) { this.etat = etat;}
 
     @ManyToOne
     public Client getClient() {
@@ -82,4 +84,11 @@ public class Reservation {
     public void setClient(Client client) {
         this.client = client;
     }
+
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    public List<Chambre> getChambres() {
+        return chambres;
+    }
+
 }

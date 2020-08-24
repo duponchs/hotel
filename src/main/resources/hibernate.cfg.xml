@@ -35,6 +35,7 @@
 
 		<!-- Enities to map -->
         <mapping class="fr.projethotel.core.entity.Client"/>
+        <mapping class="fr.projethotel.core.entity.Reservation"/>
 
 
     </session-factory>
