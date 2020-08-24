@@ -1,4 +1,4 @@
-package fr.projethotel.core.DAO;
+package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.entity.Client;

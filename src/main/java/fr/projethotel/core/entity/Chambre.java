@@ -1,6 +1,7 @@
 package fr.projethotel.core.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Chambre {
@@ -10,6 +11,7 @@ public class Chambre {
     private Integer nbPersonneMax;
     private Integer numero;
     private Hotel  hotel;
+    private List<Reservation> reservations;
 
     public Chambre() {
     }
@@ -57,5 +59,14 @@ public class Chambre {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

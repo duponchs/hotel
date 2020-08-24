@@ -86,9 +86,12 @@ public class Reservation {
     }
 
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy = "chambres")
     public List<Chambre> getChambres() {
         return chambres;
     }
 
+    public void setChambres(List<Chambre> chambres) {
+        this.chambres = chambres;
+    }
 }
