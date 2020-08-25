@@ -39,8 +39,6 @@
         <mapping class="fr.projethotel.core.entity.Hotel"/>
         <mapping class="fr.projethotel.core.entity.Chambre"/>
 
-
-
     </session-factory>
 
 </hibernate-configuration>

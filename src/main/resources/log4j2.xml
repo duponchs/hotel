@@ -9,8 +9,8 @@
         </Console>
     </Appenders>
     <Loggers>
-    	<Logger name="Client" level="TRACE"/>
-        <Logger name="ServiceClient" level="TRACE"/>
+    	<Logger name="Client" level="ALL"/>
+        <Logger name="ServiceClient" level="ALL"/>
     
         <Root level="error">
             <AppenderRef ref="STDOUT"/>

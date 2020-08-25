@@ -6,10 +6,11 @@ import java.time.LocalDate;
 
 @Entity
 public class Client {
-    Integer id;
-    String nom;
-    String prenom;
-    LocalDate dateNaissance;
+    private Integer id;
+    private String nom;
+    private String prenom;
+    private LocalDate dateNaissance;
+    private String email;
 
     public Client() {
     }
@@ -45,5 +46,13 @@ public class Client {
 
     public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

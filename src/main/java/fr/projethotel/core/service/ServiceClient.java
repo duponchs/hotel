@@ -32,11 +32,15 @@ public class ServiceClient {
             client.setPrenom(prenom);
             client.setDateNaissance(date);
 
+            System.out.println("Quel est l'adresse mail du client  ?");
+            client.setEmail(clavier.nextLine());
+
             clientDAO.create(client);
             System.out.println("le client a été créé, son identifiant est "+client.getId());
         }else{
             logger.info("Une erreur de saisie sur la date de naissance est survenue");
         }
+
 
     }
 }
