@@ -15,6 +15,7 @@ public class Client {
     private String prenom;
     private LocalDate dateNaissance;
     private String email;
+    private Boolean archiver = false;
 
     public Client() {
     }
@@ -59,5 +60,13 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getArchiver() {
+        return archiver;
+    }
+
+    public void setArchiver(Boolean archiver) {
+        this.archiver = archiver;
     }
 }
