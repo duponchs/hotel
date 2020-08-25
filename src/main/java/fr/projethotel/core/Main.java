@@ -9,7 +9,9 @@ public class Main {
         //MenuService.menu();
 
         //ServiceClient serviceClient = new ServiceClient();
-        //Client client = serviceClient.lectureClienNomPrenomDateNaissanceEmail();
+        //serviceClient.ajouterClient();
+        //serviceClient.deleteClient();
+
 
 
        // ServiceHotel serviceHotel = new ServiceHotel();

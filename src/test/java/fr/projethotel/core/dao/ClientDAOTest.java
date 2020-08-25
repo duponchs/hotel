@@ -1,59 +1,31 @@
 package fr.projethotel.core.dao;
 
-import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.entity.Client;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import fr.projethotel.core.service.ServiceClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 
 import java.time.LocalDate;
 
-public class ClientDAOTest {
+import static org.mockito.Mockito.*;
 
-    static final Logger logger = LogManager.getLogger("ClientDAO");
 
-    public void create(Client client) {
-        Transaction transaction = null;
+@ExtendWith(MockitoExtension.class)
+class ClientDAOTest{
+    ClientDAO clientDAO = mock(ClientDAO.class);;
+    Client client;
+    @BeforeEach
+    void init(){
+         this.clientDAO = new ClientDAO();
 
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(client);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.fatal(e.getMessage());
-        }
     }
-    public Client getById(Integer id){
-        Client client = null;
-
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            client = session.get(Client.class,id);
-            logger.trace("client lu");
-        } catch (Throwable t) {
-            logger.fatal(t.getMessage());
-        }
-        return client;
-    }
-    public Client getByNomPrenomEmail(String nom,String prenom, LocalDate dateNaissance,String email){
-        Client client = null;
-
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Client> query = session.getNamedQuery("client.findByNomPrenomEmail");
-            query.setParameter("nom",nom);
-            query.setParameter("prenom",prenom);
-            query.setParameter("dateNaissance",dateNaissance);
-            query.setParameter("email",email);
-            client = query.getSingleResult();
-            logger.trace("client lu");
-        } catch (Throwable t) {
-            logger.fatal(t.getMessage());
-        }
-        return client;
+    @Test
+    void creationDuCLientTrueSiCree(){
+       //when(clientDAO.getById(any(Client.class),anyInt())
     }
 
 }

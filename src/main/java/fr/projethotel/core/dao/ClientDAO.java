@@ -48,12 +48,39 @@ public class ClientDAO {
             query.setParameter("prenom",prenom);
             query.setParameter("dateNaissance",dateNaissance);
             query.setParameter("email",email);
-            client = query.getSingleResult();
-            logger.trace("client lu");
+            try {
+                client = query.getSingleResult();
+                logger.trace("client lu");
+            }catch (Exception e){
+                logger.fatal(e.getMessage());
+            }
         } catch (Throwable t) {
             logger.fatal(t.getMessage());
         }
         return client;
     }
+    public void delete(Client client){
+        if (client!=null){
+            if(!client.getArchiver()){
+                Transaction transaction = null;
+                try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+                    transaction = session.beginTransaction();
+                    session.delete(client);
+                    transaction.commit();
+                } catch (Exception e) {
+                    if (transaction != null) {
+                        transaction.rollback();
+                    }
+                    logger.fatal(e.getMessage());
+                }
+            }else{
+                logger.trace("L'état du client est archivé, impossible de le supprimer pour le moment");
+            }
+        }else{
+            logger.trace("Une erreur sur la saisie du client est survenue");
+        }
+    }
+
+
 
 }
