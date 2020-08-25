@@ -13,10 +13,12 @@ public class ServiceClient {
 
     private ClientDAO clientDAO;
     static final Logger logger = LogManager.getLogger("ServiceClient");
-    public ServiceClient(){
+
+    public ServiceClient() {
         this.clientDAO = new ClientDAO();
     }
-    public  void  ajouterClient(){
+
+    public void ajouterClient() {
         Scanner clavier = new Scanner(System.in);
         System.out.println("Quel est le nom du client  ?");
         String nom = clavier.nextLine();
@@ -24,9 +26,9 @@ public class ServiceClient {
         String prenom = clavier.nextLine();
         System.out.println("Quel est la date de naissance du client  ? (JJ/MM/YYYY) ");
         String dateString = clavier.nextLine();
-        if(dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")){
+        if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
 
-            LocalDate date = LocalDate.of(Integer.valueOf(dateString.substring(6,10)),Integer.valueOf(dateString.substring(3,5)),Integer.valueOf(dateString.substring(0,2)));
+            LocalDate date = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
             Client client = new Client();
             client.setNom(nom);
             client.setPrenom(prenom);
@@ -36,11 +38,43 @@ public class ServiceClient {
             client.setEmail(clavier.nextLine());
 
             clientDAO.create(client);
-            System.out.println("le client a été créé, son identifiant est "+client.getId());
-        }else{
+            System.out.println("le client a été créé, son identifiant est " + client.getId());
+        } else {
             logger.info("Une erreur de saisie sur la date de naissance est survenue");
         }
+    }
+
+    public Client lectureClientParId() {
+        Client client = null;
+        Scanner clavier = new Scanner(System.in);
+        System.out.println("Quel est l'identifiant du client recherché ?");
+        Integer id = clavier.nextInt();
+        client = clientDAO.getById(id);
+        return client;
+    }
+
+    public Client lectureClienNomPrenomDateNaissanceEmail() {
+        Client client = null;
+        Scanner clavier = new Scanner(System.in);
+        System.out.println("Quel est le nom du client recherché ?");
+        String nom = clavier.nextLine();
+        System.out.println("Quel est le prenom du client recherché ?");
+        String prenom = clavier.nextLine();
+        System.out.println("Quel est la date de naissance du client recherché ? (JJ/MM/YYYY) ");
+        String dateString = clavier.nextLine();
+        if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+
+            LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
 
+            System.out.println("Quel est l'adresse mail du client recherché ?");
+            String email = clavier.nextLine();
+
+            client = clientDAO.getByNomPrenomEmail(nom, prenom, dateNaissance, email);
+            System.out.println("le client recherché est " + client.getId() + " " + client.getNom() + " " + client.getPrenom());
+        } else {
+            logger.info("Une erreur de saisie sur la date de naissance est survenue");
+        }
+        return client;
     }
 }

@@ -33,11 +33,13 @@
         <property name="hbm2ddl.auto">update</property>
 
 
-		<!-- Enities to map -->
+        <!-- Enities to map -->
         <mapping class="fr.projethotel.core.entity.Client"/>
         <mapping class="fr.projethotel.core.entity.Reservation"/>
         <mapping class="fr.projethotel.core.entity.Hotel"/>
         <mapping class="fr.projethotel.core.entity.Chambre"/>
+
+
 
     </session-factory>
 

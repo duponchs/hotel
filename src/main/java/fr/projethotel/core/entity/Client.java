@@ -5,6 +5,10 @@ import java.time.LocalDate;
 
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "client.findByNomPrenomEmail",
+                query = "from Client c where c.nom=:nom and c.prenom=:prenom and c.dateNaissance=:dateNaissance and c.email=:email")
+})
 public class Client {
     private Integer id;
     private String nom;
@@ -48,6 +52,7 @@ public class Client {
         this.dateNaissance = dateNaissance;
     }
 
+    @Column(unique = true)
     public String getEmail() {
         return email;
     }
