@@ -2,15 +2,20 @@ package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.entity.Hotel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class HotelDAO {
+
+    static final Logger logger = LogManager.getLogger("HotelDAO");
+
+
     public void create(Hotel hotel) {
-        Session session = null;
         Transaction transaction = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(hotel);
             transaction.commit();
@@ -18,11 +23,7 @@ public class HotelDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            logger.fatal(e.getMessage());
         }
     }
 }

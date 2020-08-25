@@ -11,6 +11,9 @@
     <Loggers>
     	<Logger name="Client" level="ALL"/>
         <Logger name="ServiceClient" level="ALL"/>
+
+        <Logger name="Hotel" level="ALL"/>
+        <Logger name="ServiceHotel" level="ALL"/>
     
         <Root level="error">
             <AppenderRef ref="STDOUT"/>
