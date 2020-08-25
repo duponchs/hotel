@@ -80,7 +80,17 @@ public class ClientDAO {
             logger.trace("Une erreur sur la saisie du client est survenue");
         }
     }
-
-
-
+    public void update(Client client){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(client);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
+    }
 }
