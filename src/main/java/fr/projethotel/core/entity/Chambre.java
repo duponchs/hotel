@@ -9,6 +9,7 @@ public class Chambre {
     private Integer id;
     private Boolean archiver;
     private Integer nbPersonneMax;
+    private Float prix;
     private Integer numero;
     private Hotel  hotel;
     private List<Reservation> reservations;
@@ -59,6 +60,14 @@ public class Chambre {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public Float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(Float prix) {
+        this.prix = prix;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

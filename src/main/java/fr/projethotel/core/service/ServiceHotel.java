@@ -26,4 +26,8 @@ public class ServiceHotel {
 
     }
 
+    public void supprimerHotel(){
+
+    }
+
 }
