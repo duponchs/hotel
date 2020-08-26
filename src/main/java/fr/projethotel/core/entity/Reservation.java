@@ -8,8 +8,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "reservation.findByDate",
         query = "from Reservation r where r.dateNuitee=:dateNuitee"),
-        @NamedQuery(name = "reservation.findChambres",
-                query = "from Reservation r INNER JOIN Chambre c ON r.chambres")
+    //    @NamedQuery(name = "reservation.findChambres",
+    //            query = "from Reservation r INNER JOIN Chambre c ON r.chambres")
 
 })
 public class Reservation {

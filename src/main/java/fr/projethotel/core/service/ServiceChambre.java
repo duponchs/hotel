@@ -18,7 +18,6 @@ public class ServiceChambre {
         this.hotelDAO = new HotelDAO();
     }
 
-
     public void ajouterChambre(){
 
         Chambre chambre = new Chambre();
@@ -29,15 +28,12 @@ public class ServiceChambre {
 
         chambre.setNumero(numero);
 
-        Hotel hotel = new Hotel();
+        Hotel hotel = hotelDAO.getById(Utilitaire.idHotel);
 
-        hotel.setId(Utilitaire.idHotel);
-        hotel.setNom(Utilitaire.nomHotel);
         chambre.setHotel(hotel);
-        chambreDAO.create(chambre);
         hotel.getChambres().add(chambre);
+        chambreDAO.create(chambre);
         hotelDAO.update(hotel);
-
 
     }
 
