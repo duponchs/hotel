@@ -3,7 +3,12 @@ package fr.projethotel.core.entity;
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "chambre.findByArchiverTrue",
+                query = "from Chambre c where c.archiver=:true ")
+})
 public class Chambre {
 
     private Integer id;
@@ -15,6 +20,7 @@ public class Chambre {
     private List<Reservation> reservations;
 
     public Chambre() {
+        this.archiver = false;
     }
 
 
@@ -45,6 +51,7 @@ public class Chambre {
         this.nbPersonneMax = nbPersonneMax;
     }
 
+    @Column(unique = true)
     public Integer getNumero() {
         return numero;
     }

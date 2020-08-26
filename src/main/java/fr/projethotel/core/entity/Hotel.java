@@ -4,8 +4,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "hotel.findByNom",
+                query = "from Hotel h where h.nom=:nom ")
+})
 public class Hotel {
-
 
     private Integer id;
     private String nom;
