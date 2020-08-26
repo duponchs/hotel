@@ -5,15 +5,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "reservation.findByDate",
+        query = "from Reservation r where r.dateNuitee=:dateNuitee"),
+        @NamedQuery(name = "reservation.findChambres",
+                query = "from Reservation r INNER JOIN Chambre c ON r.chambres")
+
+})
 public class Reservation {
     private Integer id;
     private Integer nbPersonne;
     private LocalDate dateNuitee;
     private Float montant;
     private Integer numeroCb;
-    private String etat;
+    private String etat; //domaine de valeur : C = crée, P = payée
     private Client client;
     private List<Chambre> chambres;
+    private Integer idHotel;
 
     public Reservation() {
     }
@@ -93,5 +101,12 @@ public class Reservation {
 
     public void setChambres(List<Chambre> chambres) {
         this.chambres = chambres;
+    }
+
+    public Integer getIdHotel() {
+        return idHotel;
+    }
+    public void setIdHotel(Integer idHotel) {
+        this.idHotel = idHotel;
     }
 }
