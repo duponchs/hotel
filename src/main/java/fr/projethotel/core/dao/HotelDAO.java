@@ -41,7 +41,6 @@ public class HotelDAO {
                 logger.fatal(t.getMessage());
             }
             return hotel;
-
     }
 
     public void update(Hotel hotel){
