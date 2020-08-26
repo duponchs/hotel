@@ -1,10 +1,14 @@
 package fr.projethotel.core.service;
 
+import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.HotelDAO;
+import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 
 import java.util.Scanner;
@@ -12,7 +16,7 @@ import java.util.Scanner;
 public class ServiceHotel {
 
     private HotelDAO hotelDAO;
-    static final Logger logger = LogManager.getLogger("ServiceHotel");
+    static final Logger logger = LogManager.getLogger("hotelDAO");
     public ServiceHotel(){
         this.hotelDAO = new HotelDAO();
     }
@@ -48,6 +52,7 @@ public class ServiceHotel {
         return hotel;
 
     }
+
 
 
 }

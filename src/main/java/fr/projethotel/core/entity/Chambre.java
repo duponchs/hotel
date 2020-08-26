@@ -6,9 +6,14 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "chambre.findByArchiverTrue",
-                query = "from Chambre c where c.archiver=:true ")
+        @NamedQuery(name = "chambre.findByArchiver",
+                query = "from Chambre c where c.archiver=true "),
+        @NamedQuery(name = "chambre.findCapaciteMax",
+                query = " SELECT count (*) from Chambre c where  c.archiver=false and c.hotel.id =:idHotel"),
+       // @NamedQuery(name = "chambre.GetCapaticeJour",
+              //  query ="from Chambre c where id not in (select id from Chambre c inner join c.reservations  r where r.dateNuitee =:date) and archiver=false")
 })
+
 public class Chambre {
 
     private Integer id;
@@ -21,6 +26,8 @@ public class Chambre {
 
     public Chambre() {
         this.archiver = false;
+        this.nbPersonneMax = 3;
+        this.prix = 50f;
     }
 
 

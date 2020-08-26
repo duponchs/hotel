@@ -1,7 +1,6 @@
 package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
-import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +35,7 @@ public class HotelDAO {
                 Query<Hotel> query = session.getNamedQuery("hotel.findByNom");
                 query.setParameter("nom",nom);
                  hotel = query.getSingleResult();
-                logger.trace("client lu");
+                logger.trace("hotel trouver");
             } catch (Throwable t) {
                 logger.fatal(t.getMessage());
             }
