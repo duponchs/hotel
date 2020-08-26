@@ -8,7 +8,7 @@ import fr.projethotel.core.service.ServiceHotel;
 public class Main {
     public static void main(String... args){
         //MenuService.menu();
-
+       // HibernateUtil.getSessionFactory();
         //ServiceClient serviceClient = new ServiceClient();
         //serviceClient.ajouterClient();
         //serviceClient.miseAJourClient();
@@ -16,10 +16,12 @@ public class Main {
 
 
 
-       ServiceHotel serviceHotel = new ServiceHotel();
-       //serviceHotel.ajouterHotel();
+        ServiceHotel serviceHotel = new ServiceHotel();
+       // serviceHotel.ajouterHotel();
         serviceHotel.getBynom();
         ServiceChambre serviceChambre = new ServiceChambre();
         serviceChambre.ajouterChambre();
+        System.out.println(serviceChambre.getCapaciteMax());
+
     }
 }

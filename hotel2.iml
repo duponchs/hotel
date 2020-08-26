@@ -8,6 +8,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="hotel" />
+          <factory-entry name="hotel2" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
@@ -63,5 +64,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:3.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.10.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:2.6" level="project" />
+    <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.5.10" level="project" />
   </component>
 </module>

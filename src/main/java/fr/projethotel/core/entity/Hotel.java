@@ -1,7 +1,9 @@
 package fr.projethotel.core.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NamedQueries({
@@ -12,9 +14,10 @@ public class Hotel {
 
     private Integer id;
     private String nom;
-    private List<Chambre> chambres;
+    private Set<Chambre> chambres;
 
     public Hotel() {
+        this.chambres = new HashSet<Chambre>();
     }
 
     @Id
@@ -36,11 +39,11 @@ public class Hotel {
     }
 
     @OneToMany
-    public List<Chambre> getChambres() {
+    public Set<Chambre> getChambres() {
         return chambres;
     }
 
-    public void setChambres(List<Chambre> chambres) {
+    public void setChambres(Set<Chambre> chambres) {
         this.chambres = chambres;
     }
 }
