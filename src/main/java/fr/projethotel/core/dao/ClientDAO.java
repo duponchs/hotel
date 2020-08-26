@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.query.Query;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientDAO {
 
@@ -58,6 +60,23 @@ public class ClientDAO {
             logger.fatal(t.getMessage());
         }
         return client;
+    }
+    public List<Client> getListByNomPrenom(String nom,String prenom){
+        List<Client> listClients = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Client> query = session.getNamedQuery("client.listfindByNomPrenom");
+            query.setParameter("nom",nom);
+            query.setParameter("prenom",prenom);
+            try {
+                listClients = query.list();
+                logger.trace("liste lu");
+            }catch (Exception e){
+                logger.fatal(e.getMessage());
+            }
+        } catch (Throwable t) {
+            logger.fatal(t.getMessage());
+        }
+        return listClients;
     }
     public void delete(Client client){
         if (client!=null){

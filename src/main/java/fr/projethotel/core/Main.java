@@ -11,6 +11,7 @@ public class Main {
         //ServiceClient serviceClient = new ServiceClient();
         //serviceClient.ajouterClient();
         //serviceClient.miseAJourClient();
+        //serviceClient.miseAJourClientChoixDansListClients();
 
 
 

@@ -4,6 +4,7 @@ import fr.projethotel.core.dao.ClientDAO;
 import fr.projethotel.core.entity.Client;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +78,23 @@ public class ServiceClient {
         }
         return client;
     }
+    public void lectureClientsParNomPrenom() {
+        Scanner clavier = new Scanner(System.in);
+        List<Client> desClients =null;
+
+        System.out.println("Quel est le nom du client recherché ?");
+        String nom = clavier.nextLine();
+        System.out.println("Quel est le prenom du client recherché ?");
+        String prenom = clavier.nextLine();
+        desClients = clientDAO.getListByNomPrenom(nom,prenom);
+
+        System.out.println("--------------------------------- Liste des clients recherchés ---------------------------------------------------");
+        for (Client client:desClients) {
+
+            System.out.println(client.getId()+" "+client.getNom()+" "+client.getPrenom()+" "+client.getDateNaissance()+" "+client.getEmail()+" "+client.getArchiver());
+        }
+        System.out.println("------------------------------------------------------------------------------------------------------------------");
+    }
     public void effacerClient() {
         Client client = null;
         Character choix;
@@ -115,7 +133,7 @@ public class ServiceClient {
             logger.info("Une erreur de saisie sur la date de naissance est survenue");
         }
     }
-    public void miseAJourClient() {
+    public void miseAJourClientFullDetails() {
         Client client = lectureClienNomPrenomDateNaissanceEmail();
         Scanner clavier = new Scanner(System.in);
         Character choix;
@@ -157,4 +175,42 @@ public class ServiceClient {
             logger.fatal("Client non reconnue");
         }
     }
+    public void miseAJourClientChoixDansListClients() {
+        lectureClientsParNomPrenom();
+        Client client = null;
+        Client clientOk = null;
+        Scanner clavier = new Scanner(System.in);
+
+        client = lectureClientParId();
+
+        if(client != null){
+            clientOk = client;
+            System.out.println("Quel est le nouveau nom du client ?");
+            String nom = clavier.nextLine();
+            System.out.println("Quel est le nouveau prenom du client ?");
+            String prenom = clavier.nextLine();
+            System.out.println("Quel est la nouvelle date de naissance du client ? (JJ/MM/YYYY) ");
+            String dateString = clavier.nextLine();
+            if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+
+                LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
+
+                System.out.println("Quel est la nouvelle adresse mail du client ?");
+                String email = clavier.nextLine();
+                client.setNom(nom);
+                client.setPrenom(prenom);
+                client.setDateNaissance(dateNaissance);
+                client.setEmail(email);
+                //todo : Voir ici pour désarchiver ??
+
+                clientDAO.update(client);
+            }else{
+                logger.info("Une erreur de saisie sur la date de naissance est survenue");
+            }
+        } else{
+            logger.trace("Pas de client avec cette identifiant");
+        }
+    }
+
+    
 }

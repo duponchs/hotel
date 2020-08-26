@@ -7,7 +7,9 @@ import java.time.LocalDate;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "client.findByNomPrenomEmail",
-                query = "from Client c where c.nom=:nom and c.prenom=:prenom and c.dateNaissance=:dateNaissance and c.email=:email")
+                query = "from Client c where c.nom=:nom and c.prenom=:prenom and c.dateNaissance=:dateNaissance and c.email=:email"),
+        @NamedQuery(name = "client.listfindByNomPrenom",
+                query = "from Client c where c.nom=:nom and c.prenom=:prenom")
 })
 public class Client {
     private Integer id;
