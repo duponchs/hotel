@@ -59,11 +59,13 @@ public class Facture {
 
         // We add one empty line
         addEmptyLine(preface, 2);
+
         // titre nom client smallBold
         Paragraph paragraphNomClient = new Paragraph("Nom client :", smallBold);
         paragraphNomClient.setAlignment(Element.ALIGN_RIGHT);
         paragraphNomClient.setIndentationRight(100);
         preface.add(paragraphNomClient);
+
         // tittre prenom
         Paragraph paragraphPrenomClient = new Paragraph("Prenom client :", smallBold);
         paragraphPrenomClient.setAlignment(Element.ALIGN_RIGHT);
@@ -92,32 +94,39 @@ public class Facture {
 
         //preface.add(new Paragraph("Ce document est a conserver comme preuve.", redFont));
 
-        PdfPTable table = new PdfPTable(3);
+        PdfPTable table = new PdfPTable(4);
 
         // t.setBorderColor(BaseColor.GRAY);
         // t.setPadding(4);
         // t.setSpacing(4);
         // t.setBorderWidth(1);
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Date séjour"));
+        PdfPCell c1 = new PdfPCell(new Phrase("Numéro Client"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Nombre de pers. "));
+        c1 = new PdfPCell(new Phrase("Numero De Réservation"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Nombres de nuits"));
+        c1 = new PdfPCell(new Phrase("Numéro de chambres"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
+
+        c1 = new PdfPCell(new Phrase("Prix"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+
         table.setHeaderRows(1);
 
-        table.addCell("");
-        table.addCell("");
-        table.addCell("");
-        table.addCell("");
-        table.addCell("");
-        table.addCell("");
+        table.addCell("1.0");
+        table.addCell("1.1");
+        table.addCell("1.2");
+        table.addCell("2.1");
+        table.addCell("2.2");
+        table.addCell("2.3");
+
+        //table.setFooterRows(1);
 
         preface.add(table);
 
