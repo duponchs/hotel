@@ -7,9 +7,9 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "reservation.findByDate",
-        query = "from Reservation r where r.dateNuitee=:dateNuitee"),
-    //    @NamedQuery(name = "reservation.findChambres",
-    //            query = "from Reservation r INNER JOIN Chambre c ON r.chambres")
+            query = "from Reservation r where r.dateNuitee=:dateNuitee"),
+        @NamedQuery(name = "reservation.findByClientDate",
+            query = "from Reservation r where r.dateNuitee=:dateNuitee and r.client =:client")
 
 })
 public class Reservation {
