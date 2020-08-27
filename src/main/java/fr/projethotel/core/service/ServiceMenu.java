@@ -36,8 +36,9 @@ public class ServiceMenu {
                 //    break;
                 //case 3:
                 //    break;
-                //case 4:
-                //    break;
+                case 4: serviceHotel.getBynom();
+                        menuGestionGenerale();
+                break;
             }
         } while (choix != 0);
         clavier.close();

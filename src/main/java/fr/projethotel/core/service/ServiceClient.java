@@ -103,7 +103,7 @@ public class ServiceClient {
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
     }
-    public void effacerClient() {
+    public void effacerClientFullDetails() {
         Client client = null;
         Character choix;
         Scanner clavier = new Scanner(System.in);
@@ -141,6 +141,37 @@ public class ServiceClient {
             logger.info("Une erreur de saisie sur la date de naissance est survenue");
         }
     }
+    public void effacerClient() {
+        lectureClientsParNomPrenom();
+        Client client = null;
+        Client clientOk = null;
+        Scanner clavier = new Scanner(System.in);
+        client = lectureClientParId();
+        Character choix;
+
+        if(client!=null){
+            System.out.println("Le client supprimé est id : "
+                    + client.getId() + " nom  "
+                    + client.getNom() + " prenom "
+                    + client.getPrenom()+" date de naissance "
+                    + client.getDateNaissance()+" email "
+                    + client.getEmail()
+            );
+            do{
+                System.out.println("Êtes-vous sûr de bien vouloir supprimer ce client ? (y/n)");
+                choix = clavier.nextLine().toLowerCase().charAt(0);
+            }while(choix != 'y' && choix!= 'n');
+
+            if(choix=='y')
+                clientDAO.delete(client);
+            else
+                System.out.println("Abandon de suppression");
+        }else{
+            logger.fatal("Client non reconnue");
+        }
+
+    }
+
     public void miseAJourClientFullDetails() {
         Client client = lectureClienNomPrenomDateNaissanceEmail();
         Scanner clavier = new Scanner(System.in);
@@ -197,7 +228,7 @@ public class ServiceClient {
             String nom = clavier.nextLine();
             System.out.println("Quel est le nouveau prenom du client ?");
             String prenom = clavier.nextLine();
-            System.out.println("Quel est la nouvelle date de naissance du client ? (JJ/MM/YYYY) ");
+            System.out.println("Quel est la nouvelle date de naissance du client ? (JJ-MM-YYYY) ");
             String dateString = clavier.nextLine();
             if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
