@@ -3,6 +3,7 @@ package fr.projethotel.core.service;
 import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.HotelDAO;
+import fr.projethotel.core.entity.Chambre;
 import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ServiceHotel {
@@ -35,6 +37,7 @@ public class ServiceHotel {
 
 
     }
+
 
     public Hotel getBynom(){
         Hotel hotel = null;

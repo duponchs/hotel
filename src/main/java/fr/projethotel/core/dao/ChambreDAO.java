@@ -8,9 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class ChambreDAO {
@@ -33,6 +31,21 @@ public class ChambreDAO {
         }
     }
 
+    public void update(Chambre chambre){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(chambre);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
+    }
+
+
     public Long getCapaciteMax(){
        Long capaciteMaxHotel = null;
 
@@ -51,6 +64,24 @@ public class ChambreDAO {
         }
 
         return  capaciteMaxHotel;
+    }
+
+    public List<Chambre> getChambreNotArchived(){
+        List<Chambre> lesChampresnotArchvied = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Query<Chambre> query = session.getNamedQuery("chambre.findByNotArchiver");
+
+            try {
+                lesChampresnotArchvied = query.getResultList();
+                logger.trace("lu");
+            }catch (Exception e){
+                logger.fatal(e.getMessage());
+            }
+        } catch (Throwable t) {
+            logger.fatal(t.getMessage());
+        }
+
+        return lesChampresnotArchvied;
     }
 
     public List<Chambre> getChambreDispoAtDay(LocalDate date){

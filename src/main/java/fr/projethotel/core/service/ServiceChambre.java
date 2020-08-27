@@ -4,12 +4,9 @@ import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.ChambreDAO;
 import fr.projethotel.core.dao.HotelDAO;
 import fr.projethotel.core.entity.Chambre;
-import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -44,11 +41,47 @@ public class ServiceChambre {
 
     }
 
+    public List<Chambre> voirChambreNonArchiver(){
+        List<Chambre> chambresNotArchived = chambreDAO.getChambreNotArchived();
+
+        System.out.println("--------------------------------- Liste des chambres disponible ---------------------------------------------------");
+        for (Chambre chambre:chambresNotArchived) {
+
+            System.out.println(chambre.getNumero() );
+        }
+        System.out.println("------------------------------------------------------------------------------------------------------------------");
+        return chambresNotArchived;
+
+    }
+
+    public List<Chambre> voirChambreArchiver(){
+        List<Chambre> chambresArchived = null;
+        //TODO
+        return chambresArchived;
+
+    }
+
+    public void archiverChambre(){
+        //TODO
+
+    }
+
+    public  void deArchiverChambre(){
+        //TODO
+
+    }
+
+    public  void supprimerChambre(){
+        //TODO
+    }
+
     public Long getCapaciteMax(){
 
         Long capaciteMax = chambreDAO.getCapaciteMax();
         return  capaciteMax;
     }
+
+
 
     public List<Chambre> getChambreDispo(){
         LocalDate date = null;
@@ -71,7 +104,7 @@ public class ServiceChambre {
         System.out.println("--------------------------------- Liste des chambres disponible ---------------------------------------------------");
         for (Chambre chambre:chambresDispo) {
 
-            System.out.println(chambre.getNumero());
+            System.out.println(chambre.getNumero() );
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
 

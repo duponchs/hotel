@@ -8,6 +8,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "chambre.findByArchiver",
                 query = "from Chambre c where c.archiver=true "),
+        @NamedQuery(name = "chambre.findByNotArchiver",
+                query = "from Chambre c where c.archiver=false"),
         @NamedQuery(name = "chambre.findCapaciteMax",
                 query = " SELECT count (*) from Chambre c where  c.archiver=false and c.hotel.id =:idHotel"),
 
