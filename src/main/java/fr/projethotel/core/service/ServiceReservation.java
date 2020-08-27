@@ -1,27 +1,30 @@
 package fr.projethotel.core.service;
 
+import fr.projethotel.core.dao.ChambreDAO;
+import fr.projethotel.core.dao.ClientDAO;
 import fr.projethotel.core.dao.ReservationDAO;
 import fr.projethotel.core.entity.Chambre;
-import fr.projethotel.core.service.ServiceClient;
-import fr.projethotel.core.service.ServiceChambre;
 import fr.projethotel.core.entity.Reservation;
 import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class ServiceReservation {
     private ReservationDAO reservationDAO;
+    private ChambreDAO chambreDAO;
+    private ClientDAO clientDAO;
     private ServiceClient serviceClient;
     private ServiceChambre serviceChambre;
     static final Logger logger = LogManager.getLogger("ServiceReservation");
     public ServiceReservation() {
         this.reservationDAO = new ReservationDAO();
+        this.chambreDAO = new ChambreDAO();
+        this.clientDAO = new ClientDAO();
         this.serviceClient = new ServiceClient();
         this.serviceChambre = new ServiceChambre();
     }
@@ -29,6 +32,7 @@ public class ServiceReservation {
     public  void  ajouterReservation(){
         Integer nbChambresOccupees = 0;
         Integer nbChambresVoulues = 0;
+        Integer nbChambresLibres = 0;
         Long capaciteHotel ;
         Float montantReservation = 0f;
         LocalDate dateNuitee = null;
@@ -53,13 +57,13 @@ public class ServiceReservation {
                 if (dateNuitee != null) {
                     //Recherche de la capacité de l'hotel
                     capaciteHotel = rechercheCapaciteHotel();
-                    //Recherche du nombre de chambres occupées à la date voulue
-                    nbChambresOccupees = rechercheNbChambresOccupees(dateNuitee);
+                    //Recherche du nombre de chambres libres à la date voulue
+                    nbChambresLibres = rechercheNbChambresLibres(dateNuitee);
                     //Vérification que le nombre de chambres est suffisant
-                    nbChambreSuffisant = verificationNbChambreSuffisant(capaciteHotel,nbChambresOccupees, nbChambresVoulues);
+                    nbChambreSuffisant = verificationNbChambreSuffisant(nbChambresLibres, nbChambresVoulues);
                     if (nbChambreSuffisant = true) {
                         //Calcul du montant à payer et affichage
-                        montantReservation = calculMontantReservation(capaciteHotel,nbChambresOccupees, nbChambresVoulues);
+                        montantReservation = calculMontantReservation(capaciteHotel,nbChambresLibres, nbChambresVoulues);
                         //Validation de la transaction
                         validation = saisieValidation();
                         if (validation = true) {
@@ -75,6 +79,17 @@ public class ServiceReservation {
         }
     }
 
+    public void facturerReservation(){
+        Reservation reservation;
+     // selectionner une reservation (par client et date)
+        reservation = rechercherReservation();
+     // passage de l'état de la reservation à payée
+        reservation.setEtat("P"); //domaine de valeur : C = crée, P = payée
+        reservationDAO.update(reservation);
+     // mise à jour du client qui passe en archivé
+        clientDAO.setTrueStatusArchiver(reservation.getClient());
+}
+
     public void assignerChambres(){
         Reservation reservation;
         Integer nbChambres;
@@ -85,13 +100,13 @@ public class ServiceReservation {
         Scanner clavier = new Scanner(System.in);
         Chambre chambreASAuvegarder = null;
 
-     // selectionner une reservation (par client et date)
+        // selectionner une reservation (par client et date)
         reservation = rechercherReservation();
 
-     // recuperer la liste des chambres disponibles pour cet hotel
+        // recuperer la liste des chambres disponibles pour cet hotel
         lesChambresDispo = serviceChambre.getChambreDispo();
 
-     // création de la liste de chambre(s) à assigner
+        // création de la liste de chambre(s) à assigner
         nbChambres = calculNbChambresVoulues(reservation.getNbPersonne());
         do{
             //Saisie d'un numero de chambre
@@ -108,13 +123,14 @@ public class ServiceReservation {
             increment++;
         }
         while (increment < nbChambres);
-     // mise à jour de la reservation : ajout de la liste des chambres et modification etat
-        reservation.setEtat("P");
+        // mise à jour de la reservation : ajout de la liste des chambres et modification etat
+        reservation.setEtat("P"); //domaine de valeur : C = crée, P = payée
         reservation.setChambres(lesChambresAttribuees);
         reservationDAO.update(reservation);
-     // mise à jour du client qui passe en archivé
-        //TODO ajouter fonction du serviceclient
+        // mise à jour du client qui passe en archivé
+        clientDAO.setTrueStatusArchiver(reservation.getClient());
     }
+
     public void afficherReservationsJour(){
         LocalDate dateNuitee;
         List<Reservation> desReservations =null;
@@ -232,16 +248,15 @@ public class ServiceReservation {
         return resultat;
     }
 
-    public Integer rechercheNbChambresOccupees(LocalDate d){
+    public Integer rechercheNbChambresLibres(LocalDate d){
         Integer resultat;
-        //TODO implémenter la recherche service.chambre
-        resultat = 4;
+        resultat = (chambreDAO.getChambreDispoAtDay(d)).size();
         return resultat;
     }
 
-    public Boolean verificationNbChambreSuffisant(Long capacite, int occupe, int voulues){
+    public Boolean verificationNbChambreSuffisant(int libres, int voulues){
 
-        if (capacite-occupe >= voulues ){
+        if (libres >= voulues ){
             System.out.println("Nombre de chambre suffisant");
             return true;
         }
@@ -251,14 +266,16 @@ public class ServiceReservation {
         }
     }
 
-    public Float calculMontantReservation(Long capacite, int occupe, int voulues){
+    public Float calculMontantReservation(Long capacite, int libres, int voulues){
       Float resultat;
       Float tarifUnitaire;
       Float pourcentageOccupation = 0f;
       Float majoration = 0f;
+      long occupe = 0;
       double trancheOccupation;
       tarifUnitaire = (50.0f);
 
+      occupe = (capacite - libres);
       pourcentageOccupation = (float)(occupe/capacite*100);
       trancheOccupation = Math.floor(pourcentageOccupation/10);
       majoration = (float) (trancheOccupation*tarifUnitaire*0.1);
@@ -301,7 +318,7 @@ public class ServiceReservation {
         Reservation reservation = new Reservation();
         reservation.setClient(client);
         reservation.setNbPersonne(nbPersonne);
-        reservation.setEtat("C");
+        reservation.setEtat("C"); //domaine de valeur : C = crée, P = payée
         reservation.setMontant(montantReservation);
         reservation.setNumeroCb(numeroCb);
         reservation.setDateNuitee(dateNuitee);
