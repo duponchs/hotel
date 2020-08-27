@@ -1,9 +1,11 @@
 package fr.projethotel.core.service;
 
 import fr.projethotel.core.dao.ReservationDAO;
+import fr.projethotel.core.entity.Chambre;
 import fr.projethotel.core.service.ServiceClient;
 import fr.projethotel.core.entity.Reservation;
 import fr.projethotel.core.entity.Client;
+import fr.projethotel.core.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
@@ -15,16 +17,18 @@ import java.util.Scanner;
 public class ServiceReservation {
     private ReservationDAO reservationDAO;
     private ServiceClient serviceClient;
+    private ServiceChambre serviceChambre;
     static final Logger logger = LogManager.getLogger("ServiceReservation");
-    public ServiceReservation(){
+    public ServiceReservation() {
         this.reservationDAO = new ReservationDAO();
-        this.serviceClient = new ServiceClient();}
-
+        this.serviceClient = new ServiceClient();
+        this.serviceChambre = new ServiceChambre();
+    }
 
     public  void  ajouterReservation(){
         Integer nbChambresOccupees = 0;
         Integer nbChambresVoulues = 0;
-        Integer capaciteHotel = 0;
+        Long capaciteHotel ;
         Float montantReservation = 0f;
         LocalDate dateNuitee = null;
         Client client = null;
@@ -46,15 +50,15 @@ public class ServiceReservation {
                 //Saisie de la date de réservation
                 dateNuitee = saisieDateNuitee();
                 if (dateNuitee != null) {
-                    //Recherche de la capacité de l'hôtel à la date voulue
-                    capaciteHotel = rechercheCapaciteHotel(dateNuitee);
+                    //Recherche de la capacité de l'hotel
+                    capaciteHotel = rechercheCapaciteHotel();
                     //Recherche du nombre de chambres occupées à la date voulue
                     nbChambresOccupees = rechercheNbChambresOccupees(dateNuitee);
                     //Vérification que le nombre de chambres est suffisant
                     nbChambreSuffisant = verificationNbChambreSuffisant(capaciteHotel,nbChambresOccupees, nbChambresVoulues);
                     if (nbChambreSuffisant = true) {
                         //Calcul du montant à payer et affichage
-                        montantReservation = calculMontantReservation(nbChambresVoulues);
+                        montantReservation = calculMontantReservation(capaciteHotel,nbChambresOccupees, nbChambresVoulues);
                         //Validation de la transaction
                         validation = saisieValidation();
                         if (validation = true) {
@@ -70,10 +74,27 @@ public class ServiceReservation {
         }
     }
 
+    public void assignerChambres(){
+        Reservation reservation;
+        List<Chambre> lesChambresdispo;
+        List<Chambre> lesChambresattribuees;
+     // selectionner une reservation (par client et date)
+        reservation = rechercherReservation();
+     // recuperer la liste des chambres disponibles pour cet hotel
+        //TODO
+     // afficher la liste des chambres disponibles
+        //TODO
+     // création de la liste de chambre(s) à assigner une reservation
+        //TODO
+     // mise à jour de la reservation
 
+           //ReservationDAO.update(reservation);
+
+    }
     public void afficherReservationsJour(){
         LocalDate dateNuitee;
         List<Reservation> desReservations =null;
+        List<Chambre> desChambres =null;
         //Saisie de la date
         dateNuitee = saisieDateNuitee();
         //Recherche de toutes les réservations à cette date
@@ -81,7 +102,7 @@ public class ServiceReservation {
         System.out.println("--------------------------------- Liste des réservations ---------------------------------------------------");
         for (Reservation reservation:desReservations) {
             //recherche de(s) chambre(s) pour la reservation de l'itération en cours
-
+            //desChambres = reservationDAO.getListChambreByReservation(reservation);
             //Affichage d'une réservation
             System.out.println("Réservation :"+reservation.getId());
             System.out.println("Id hotel :" + reservation.getIdHotel());
@@ -91,20 +112,33 @@ public class ServiceReservation {
             System.out.println("Client nom:" + reservation.getClient().getNom());
             System.out.println("Client prénom:" + reservation.getClient().getPrenom());
             System.out.println("Client mail:" + reservation.getClient().getEmail());
-            System.out.println("Chambres "); //TODO
-
-
+            desChambres = reservation.getChambres();
+            for (Chambre chambre:desChambres) {
+                System.out.println("Chambre " + chambre.getNumero());
+            }
         }
-
-
     }
 
 
 
     public void supprimerReservation(){
-        Client client = null;
+        Reservation reservation = null;
         LocalDate dateNuitee;
         Boolean validation;
+        //Selection de la reservation
+        reservation = rechercherReservation();
+        //valider la transaction
+        validation = saisieValidation();
+        if (validation = true) {
+            reservationDAO.delete(reservation);
+        }
+
+    }
+
+    public Reservation rechercherReservation(){
+        Client client = null;
+        Reservation reservation = null;
+        LocalDate dateNuitee;
         //Recherche du client détenant la réservation
         client = rechercheClient();
         //Saisie de la date de nuitée de la réservation à annuler
@@ -112,15 +146,11 @@ public class ServiceReservation {
             dateNuitee = saisieDateNuitee();
             if (dateNuitee != null) {
                 //Retrouver la reservation correspondante
-                //reservationDAO.getByClientDate(client, dateNuitee);
-                //valider la transaction
-                validation = saisieValidation();
-                //if (validation = true) {
-                //    reservationDAO.delete(reservation);
-                //}
+                reservation = reservationDAO.getByClientDate(client, dateNuitee);
+
             }
         }
-
+    return reservation;
     }
 
     public Client rechercheClient() {
@@ -164,21 +194,20 @@ public class ServiceReservation {
         }
     }
 
-    public Integer rechercheCapaciteHotel(LocalDate d){
-        Integer resultat;
-        //TODO resultat = ChambreDAO.getCapaciteMax(d)
-        resultat = 10;
+    public Long rechercheCapaciteHotel(){
+        Long resultat;
+        resultat =serviceChambre.getCapaciteMax();
         return resultat;
     }
 
     public Integer rechercheNbChambresOccupees(LocalDate d){
         Integer resultat;
-        //TODO implémenter la recherche
+        //TODO implémenter la recherche service.chambre
         resultat = 4;
         return resultat;
     }
 
-    public Boolean verificationNbChambreSuffisant(int capacite, int occupe, int voulues){
+    public Boolean verificationNbChambreSuffisant(Long capacite, int occupe, int voulues){
 
         if (capacite-occupe >= voulues ){
             System.out.println("Nombre de chambre suffisant");
@@ -190,11 +219,19 @@ public class ServiceReservation {
         }
     }
 
-    public Float calculMontantReservation(int i){
+    public Float calculMontantReservation(Long capacite, int occupe, int voulues){
       Float resultat;
       Float tarifUnitaire;
+      Float pourcentageOccupation = 0f;
+      Float majoration = 0f;
+      double trancheOccupation;
       tarifUnitaire = (50.0f);
-      resultat = (tarifUnitaire * i);
+
+      pourcentageOccupation = (float)(occupe/capacite*100);
+      trancheOccupation = Math.floor(pourcentageOccupation/10);
+      majoration = (float) (trancheOccupation*tarifUnitaire*0.1);
+
+      resultat = ((tarifUnitaire * voulues)+ majoration);
       System.out.println("Prix de la réservation : "+resultat+" Euros");
       return resultat;
     }
@@ -216,17 +253,15 @@ public class ServiceReservation {
             switch (choix) {
                 case "O":
                     System.out.println("Transaction acceptée");
-                    break;
+                    return true;
                 case "N":
                     System.out.println("Transaction annulée");
-                    break;
+                    return false;
                 default:
                     System.out.println("Saisie incorrecte");
-                    break;
+                    return false;
             }
         } while (choix != "O" && choix != "N");
-
-        return true;
     }
 
     public void enregistrerReservation(Client client, Integer nbPersonne, Float montantReservation, Integer numeroCb, LocalDate dateNuitee){
@@ -238,7 +273,7 @@ public class ServiceReservation {
         reservation.setMontant(montantReservation);
         reservation.setNumeroCb(numeroCb);
         reservation.setDateNuitee(dateNuitee);
-        //reservation.setIdHotel(Utilitaire.IdHotel);
+        reservation.setIdHotel(Utilitaire.getIdHotel());
         reservationDAO.create(reservation);
     }
 
