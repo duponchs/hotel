@@ -20,8 +20,10 @@ public class Main {
        // serviceHotel.ajouterHotel();
         serviceHotel.getBynom();
         ServiceChambre serviceChambre = new ServiceChambre();
-        serviceChambre.ajouterChambre();
-        System.out.println(serviceChambre.getCapaciteMax());
+        //serviceChambre.ajouterChambre();
+        //System.out.println(serviceChambre.getCapaciteMax());
+        serviceChambre.getChambreDispo();
+
 
     }
 }

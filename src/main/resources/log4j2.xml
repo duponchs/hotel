@@ -12,8 +12,12 @@
     	<Logger name="Client" level="ALL"/>
         <Logger name="ServiceClient" level="ALL"/>
 
+        <Logger name="Chambre" level="ALL"/>
+        <Logger name="ServiceChambre" level="ALL"/>
+
         <Logger name="Hotel" level="ALL"/>
         <Logger name="ServiceHotel" level="ALL"/>
+
         <Logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="FILE"/>
         </Logger>

@@ -10,8 +10,7 @@ import java.util.List;
                 query = "from Chambre c where c.archiver=true "),
         @NamedQuery(name = "chambre.findCapaciteMax",
                 query = " SELECT count (*) from Chambre c where  c.archiver=false and c.hotel.id =:idHotel"),
-       // @NamedQuery(name = "chambre.GetCapaticeJour",
-              //  query ="from Chambre c where id not in (select id from Chambre c inner join c.reservations  r where r.dateNuitee =:date) and archiver=false")
+
 })
 
 public class Chambre {

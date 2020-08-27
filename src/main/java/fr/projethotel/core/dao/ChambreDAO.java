@@ -9,6 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 public class ChambreDAO {
 
     static final Logger logger = LogManager.getLogger("ChambreDAO");
@@ -48,6 +52,29 @@ public class ChambreDAO {
 
         return  capaciteMaxHotel;
     }
+
+    public List<Chambre> getChambreDispoAtDay(LocalDate date){
+        List<Chambre> lesChambresDispo = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            Query<Chambre> query = session.createQuery("from Chambre c where c.id not in " +
+                    "(select chambre.id from Chambre chambre inner join chambre.reservations  r where r.dateNuitee =:date) and c.archiver=false and c.hotel.id=:idHotel");
+            query.setParameter("date", date);
+            query.setParameter("idHotel", Utilitaire.getIdHotel());
+
+            try {
+                lesChambresDispo = query.getResultList();
+                logger.trace("lu");
+            }catch (Exception e){
+                logger.fatal((e.getMessage()));
+            }
+        }catch (Throwable t) {
+                logger.fatal(t.getMessage());
+            }
+        return lesChambresDispo;
+    }
+
+
 
 
 }
