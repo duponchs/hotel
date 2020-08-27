@@ -91,12 +91,11 @@ public class ReservationDAO {
             logger.fatal(e.getMessage());
         }
     }
-    public void delete(Reservation reservation) {
+    public void delete(Reservation reservation){
         Transaction transaction = null;
-
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.persist(reservation);
+            session.delete(reservation);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -105,6 +104,5 @@ public class ReservationDAO {
             logger.fatal(e.getMessage());
         }
     }
-
 }
 

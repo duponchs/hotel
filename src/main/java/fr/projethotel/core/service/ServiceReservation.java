@@ -3,6 +3,7 @@ package fr.projethotel.core.service;
 import fr.projethotel.core.dao.ReservationDAO;
 import fr.projethotel.core.entity.Chambre;
 import fr.projethotel.core.service.ServiceClient;
+import fr.projethotel.core.service.ServiceChambre;
 import fr.projethotel.core.entity.Reservation;
 import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.Utilitaire;
@@ -76,20 +77,43 @@ public class ServiceReservation {
 
     public void assignerChambres(){
         Reservation reservation;
-        List<Chambre> lesChambresdispo;
-        List<Chambre> lesChambresattribuees;
+        Integer nbChambres;
+        List<Chambre> lesChambresDispo = null;
+        List<Chambre> lesChambresAttribuees = null;
+        Integer increment = 0;
+        Integer numeroChambre;
+        Scanner clavier = new Scanner(System.in);
+        Chambre chambreASAuvegarder = null;
+
      // selectionner une reservation (par client et date)
         reservation = rechercherReservation();
+
      // recuperer la liste des chambres disponibles pour cet hotel
-        //TODO
-     // afficher la liste des chambres disponibles
-        //TODO
-     // création de la liste de chambre(s) à assigner une reservation
-        //TODO
-     // mise à jour de la reservation
+        lesChambresDispo = serviceChambre.getChambreDispo();
 
-           //ReservationDAO.update(reservation);
-
+     // création de la liste de chambre(s) à assigner
+        nbChambres = calculNbChambresVoulues(reservation.getNbPersonne());
+        do{
+            //Saisie d'un numero de chambre
+            System.out.println("Veuillez saisir une chambre : "+(increment+1)+ "sur "+nbChambres);
+            numeroChambre = clavier.nextInt();
+            //On récupère la chambre correspondant au numero saisi
+            for (Chambre c:lesChambresDispo) {
+                if (numeroChambre == c.getNumero()) {
+                    chambreASAuvegarder = c;
+                }
+            }
+            //alimentation de la liste les ChambresAttribuees
+            lesChambresAttribuees.add(chambreASAuvegarder);
+            increment++;
+        }
+        while (increment < nbChambres);
+     // mise à jour de la reservation : ajout de la liste des chambres et modification etat
+        reservation.setEtat("P");
+        reservation.setChambres(lesChambresAttribuees);
+        reservationDAO.update(reservation);
+     // mise à jour du client qui passe en archivé
+        //TODO ajouter fonction du serviceclient
     }
     public void afficherReservationsJour(){
         LocalDate dateNuitee;
@@ -101,8 +125,6 @@ public class ServiceReservation {
         desReservations = reservationDAO.getListByDate(dateNuitee);
         System.out.println("--------------------------------- Liste des réservations ---------------------------------------------------");
         for (Reservation reservation:desReservations) {
-            //recherche de(s) chambre(s) pour la reservation de l'itération en cours
-            //desChambres = reservationDAO.getListChambreByReservation(reservation);
             //Affichage d'une réservation
             System.out.println("Réservation :"+reservation.getId());
             System.out.println("Id hotel :" + reservation.getIdHotel());
@@ -153,8 +175,18 @@ public class ServiceReservation {
     return reservation;
     }
 
+    public Reservation rechercheReservationById(){
+        Scanner clavier = new Scanner(System.in);
+        Reservation reservation = null;
+        System.out.println("Saisir une id de reservation");
+        Integer id = clavier.nextInt();
+        reservation = reservationDAO.getReservationById(id);
+        return reservation;
+    }
+
     public Client rechercheClient() {
-        Client client = serviceClient.lectureClienNomPrenomDateNaissanceEmail();
+        serviceClient.lectureClientsParNomPrenom();
+        Client client = serviceClient.lectureClientParId();
         if (client == null) {
             logger.fatal("Le client n'est pas référencé, créer d'abord le client");
         }
