@@ -1,18 +1,13 @@
 package fr.projethotel.core.service;
-
-import fr.projethotel.core.HibernateUtil;
-import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.ClientDAO;
 import fr.projethotel.core.entity.Client;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
-
 import fr.projethotel.core.entity.Reservation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
+
 
 public class ServiceClient {
 

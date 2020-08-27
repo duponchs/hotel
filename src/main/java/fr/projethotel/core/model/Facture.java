@@ -35,24 +35,29 @@ public class Facture {
         System.out.println();
         //serviceClient.rechercheDesReservations();
         clientStatic = serviceClient.rechercheDesReservationsPlusIntegrationClient();
-        reservationStatic = serviceReservation.rechercheReservationById();
-        try {
-            PdfWriter.getInstance(document, new FileOutputStream("Facture"+clientStatic.getId()+" "+".pdf"));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        document.open();
-        try {
-           // addMetaData(document);
-            addTitlePage(document);
-            //addContent(document);
+        if(clientStatic !=null){
+            reservationStatic = serviceReservation.rechercheReservationById();
 
-        } catch (DocumentException e) {
-            e.printStackTrace();
+            if(reservationStatic!=null){
+                try {
+                    PdfWriter.getInstance(document, new FileOutputStream("Facture"+clientStatic.getId()+" "+".pdf"));
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                document.open();
+                try {
+                    // addMetaData(document);
+                    addTitlePage(document);
+                    //addContent(document);
+
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+                document.close();
+            }
         }
-        document.close();
     }
 
     // iText allows to add metadata to the PDF which can be viewed in your Adobe

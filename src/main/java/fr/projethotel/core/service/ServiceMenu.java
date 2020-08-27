@@ -1,5 +1,6 @@
 package fr.projethotel.core.service;
 import fr.projethotel.core.dao.ChambreDAO;
+import fr.projethotel.core.model.Facture;
 
 import java.util.Scanner;
 public class ServiceMenu {
@@ -54,6 +55,7 @@ public class ServiceMenu {
             System.out.println("Gérer les clients          : tapez 1");
             System.out.println("gérer les chambres         : tapez 2");
             System.out.println("Gérer les réservations     : tapez 3");
+            System.out.println("Facturation                : tapez 4");
             System.out.println("----------------------------------------------------");
             System.out.println("quitter : tapez 0");
             choix = clavier.nextInt();
@@ -62,8 +64,10 @@ public class ServiceMenu {
                 case 1: menuClient();
                     break;
                 case 2: menuChambre();
-                //    break;
+                    break;
                 case 3: menuReservation();
+                    break;
+                case 4: Facture.GenerationFacturePDF();
                     break;
             }
         } while (choix != 0);
