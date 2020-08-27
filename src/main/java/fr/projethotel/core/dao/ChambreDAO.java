@@ -44,8 +44,7 @@ public class ChambreDAO {
             logger.fatal(e.getMessage());
         }
     }
-
-
+    
     public Long getCapaciteMax(){
        Long capaciteMaxHotel = null;
 
@@ -67,12 +66,12 @@ public class ChambreDAO {
     }
 
     public List<Chambre> getChambreNotArchived(){
-        List<Chambre> lesChampresnotArchvied = null;
+        List<Chambre> lesChambresnotArchvied = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             Query<Chambre> query = session.getNamedQuery("chambre.findByNotArchiver");
 
             try {
-                lesChampresnotArchvied = query.getResultList();
+                lesChambresnotArchvied = query.getResultList();
                 logger.trace("lu");
             }catch (Exception e){
                 logger.fatal(e.getMessage());
@@ -81,7 +80,24 @@ public class ChambreDAO {
             logger.fatal(t.getMessage());
         }
 
-        return lesChampresnotArchvied;
+        return lesChambresnotArchvied;
+    }
+    public List<Chambre> getChambreArchived(){
+        List<Chambre> lesChambresArchvied = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            Query<Chambre> query = session.getNamedQuery("chambre.findByArchiver");
+
+            try {
+                lesChambresArchvied = query.getResultList();
+                logger.trace("lu");
+            }catch (Exception e){
+                logger.fatal(e.getMessage());
+            }
+        } catch (Throwable t) {
+            logger.fatal(t.getMessage());
+        }
+
+        return lesChambresArchvied;
     }
 
     public List<Chambre> getChambreDispoAtDay(LocalDate date){

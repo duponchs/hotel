@@ -8,7 +8,7 @@
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property><!-- ou son nouveau nom com.mysql.cj.jdbc.Driver -->
         <property name="connection.url">jdbc:mysql://localhost:3306/hotel?useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Paris</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.password"></property>
 
         <!-- dbcp connection pool configuration -->
         <property name="hibernate.dbcp.initialSize">5</property>

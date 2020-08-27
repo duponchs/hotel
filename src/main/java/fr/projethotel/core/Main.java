@@ -9,14 +9,12 @@ public class Main {
     public static void main(String... args){
         //MenuService.menu();
        // HibernateUtil.getSessionFactory();
-       // ServiceClient serviceClient = new ServiceClient();
+        ServiceClient serviceClient = new ServiceClient();
         //serviceClient.ajouterClient();
         //serviceClient.miseAJourClient();
         //serviceClient.miseAJourClientChoixDansListClients();
-        //serviceClient.rechercheDesReservations();
+        serviceClient.rechercheDesReservations();
 
-        //serviceClient.DesarchiverClient();
-       // serviceClient.archiverClient();
 
 
         //ServiceHotel serviceHotel = new ServiceHotel();

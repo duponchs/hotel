@@ -44,7 +44,7 @@ public class ServiceChambre {
     public List<Chambre> voirChambreNonArchiver(){
         List<Chambre> chambresNotArchived = chambreDAO.getChambreNotArchived();
 
-        System.out.println("--------------------------------- Liste des chambres disponible ---------------------------------------------------");
+        System.out.println("--------------------------------- Liste des Chambres  non Archiver  ---------------------------------------------------");
         for (Chambre chambre:chambresNotArchived) {
 
             System.out.println(chambre.getNumero() );
@@ -55,8 +55,15 @@ public class ServiceChambre {
     }
 
     public List<Chambre> voirChambreArchiver(){
-        List<Chambre> chambresArchived = null;
-        //TODO
+        List<Chambre> chambresArchived = chambreDAO.getChambreArchived();
+
+        System.out.println("--------------------------------- Liste des Chambres Archiver  ---------------------------------------------------");
+        for (Chambre chambre:chambresArchived) {
+
+            System.out.println(chambre.getNumero() );
+        }
+        System.out.println("------------------------------------------------------------------------------------------------------------------");
+
         return chambresArchived;
 
     }
