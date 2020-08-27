@@ -2,6 +2,7 @@ package fr.projethotel.core.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -71,4 +72,6 @@ public class Client {
     public void setArchiver(Boolean archiver) {
         this.archiver = archiver;
     }
+
+
 }

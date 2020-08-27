@@ -9,20 +9,21 @@ public class Main {
     public static void main(String... args){
         //MenuService.menu();
        // HibernateUtil.getSessionFactory();
-        //ServiceClient serviceClient = new ServiceClient();
+        ServiceClient serviceClient = new ServiceClient();
         //serviceClient.ajouterClient();
         //serviceClient.miseAJourClient();
         //serviceClient.miseAJourClientChoixDansListClients();
+        serviceClient.rechercheDesReservations();
 
 
 
-        ServiceHotel serviceHotel = new ServiceHotel();
+        //ServiceHotel serviceHotel = new ServiceHotel();
        // serviceHotel.ajouterHotel();
-        serviceHotel.getBynom();
-        ServiceChambre serviceChambre = new ServiceChambre();
+        //serviceHotel.getBynom();
+        //ServiceChambre serviceChambre = new ServiceChambre();
         //serviceChambre.ajouterChambre();
         //System.out.println(serviceChambre.getCapaciteMax());
-        serviceChambre.getChambreDispo();
+        //serviceChambre.getChambreDispo();
 
 
     }

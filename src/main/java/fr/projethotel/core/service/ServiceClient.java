@@ -1,5 +1,7 @@
 package fr.projethotel.core.service;
 
+import fr.projethotel.core.HibernateUtil;
+import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.ClientDAO;
 import fr.projethotel.core.entity.Client;
 
@@ -7,8 +9,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.projethotel.core.entity.Reservation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
 
 public class ServiceClient {
 
@@ -25,9 +29,9 @@ public class ServiceClient {
         String nom = clavier.nextLine();
         System.out.println("Quel est le prenom du client  ?");
         String prenom = clavier.nextLine();
-        System.out.println("Quel est la date de naissance du client  ? (JJ/MM/YYYY) ");
+        System.out.println("Quel est la date de naissance du client  ? (JJ-MM-YYYY) ");
         String dateString = clavier.nextLine();
-        if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+        if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
             LocalDate date = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
             Client client = new Client();
@@ -61,9 +65,9 @@ public class ServiceClient {
         String nom = clavier.nextLine();
         System.out.println("Quel est le prenom du client recherché ?");
         String prenom = clavier.nextLine();
-        System.out.println("Quel est la date de naissance du client recherché ? (JJ/MM/YYYY) ");
+        System.out.println("Quel est la date de naissance du client recherché ? (JJ-MM-YYYY) ");
         String dateString = clavier.nextLine();
-        if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+        if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
             LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
@@ -103,9 +107,9 @@ public class ServiceClient {
         String nom = clavier.nextLine();
         System.out.println("Quel est le prenom du client à supprimer ?");
         String prenom = clavier.nextLine();
-        System.out.println("Quel est la date de naissance du client à supprimer ? (JJ/MM/YYYY) ");
+        System.out.println("Quel est la date de naissance du client à supprimer ? (JJ-MM-YYYY) ");
         String dateString = clavier.nextLine();
-        if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+        if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
             LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
@@ -149,9 +153,9 @@ public class ServiceClient {
                 String nom = clavier.nextLine();
                 System.out.println("Quel est le nouveau prenom du client ?");
                 String prenom = clavier.nextLine();
-                System.out.println("Quel est la nouvelle date de naissance du client ? (JJ/MM/YYYY) ");
+                System.out.println("Quel est la nouvelle date de naissance du client ? (JJ-MM-YYYY) ");
                 String dateString = clavier.nextLine();
-                if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+                if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
                     LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
@@ -191,7 +195,7 @@ public class ServiceClient {
             String prenom = clavier.nextLine();
             System.out.println("Quel est la nouvelle date de naissance du client ? (JJ/MM/YYYY) ");
             String dateString = clavier.nextLine();
-            if (dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+            if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
                 LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
@@ -209,6 +213,28 @@ public class ServiceClient {
             }
         } else{
             logger.trace("Pas de client avec cette identifiant");
+        }
+    }
+    public void rechercheDesReservations(){
+        Scanner clavier = new Scanner(System.in);
+        List<Reservation> desReservations =null;
+
+        System.out.println("Quel est le client recherché dans la reservation ?");
+        Integer id = clavier.nextInt();
+
+        desReservations = clientDAO.rechercheReservation(id);
+
+        if (desReservations != null){
+            System.out.println("--------------------------------- Liste des Reservations du client recherché ---------------------------------------------------");
+            for (Reservation reservation: desReservations) {
+                System.out.println("Numéro de reservation : "+reservation.getId());
+                System.out.println("hotel : "+ Utilitaire.getNomHotel());
+                System.out.println("Prix : "+reservation.getMontant());
+                System.out.println("Nombre de personnes : "+reservation.getNbPersonne());
+            }
+            System.out.println("------------------------------------------------------------------------------------------------------------------");
+        }else{
+            logger.trace("aucune reservation pour ce client");
         }
     }
 

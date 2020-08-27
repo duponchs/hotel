@@ -2,6 +2,7 @@ package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
 import fr.projethotel.core.entity.Client;
+import fr.projethotel.core.entity.Reservation;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.apache.logging.log4j.LogManager;
@@ -112,4 +113,26 @@ public class ClientDAO {
             logger.fatal(e.getMessage());
         }
     }
+    public List<Reservation> listSearchReservation(Integer id) {
+        List<Reservation> reservations = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Reservation> query = session.createQuery(
+                    "from Reservation where client.id=:id");
+            query.setParameter("id",id);
+            try {
+                reservations = query.list();
+                logger.trace("liste reservation lu");
+            }catch (Exception e){
+                logger.fatal(e.getMessage());
+            }
+
+        }catch (Exception e) {
+            logger.fatal(e.getMessage());
+        }
+        return reservations;
+    }
+    public void setTrueStatusArchiver(Client client){
+
+    }
+
 }
