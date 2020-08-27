@@ -13,7 +13,7 @@ public class ServiceMenu {
 
     }
 
-    public void Menu() {
+    public void menu() {
         Scanner clavier = new Scanner(System.in);
         this.serviceHotel = new ServiceHotel();
         int choix;
@@ -42,7 +42,7 @@ public class ServiceMenu {
         } while (choix != 0);
         clavier.close();
     }
-    public void MenuGestionGenerale() {
+    public void menuGestionGenerale() {
         Scanner clavier = new Scanner(System.in);
         this.serviceHotel = new ServiceHotel();
         int choix;
@@ -58,17 +58,17 @@ public class ServiceMenu {
             choix = clavier.nextInt();
             // Traitement du choix
             switch (choix) {
-                case 1: MenuClient();
+                case 1: menuClient();
                     break;
-                case 2: MenuChambre();
+                case 2: menuChambre();
                 //    break;
-                case 3: MenuReservation();
+                case 3: menuReservation();
                     break;
             }
         } while (choix != 0);
         clavier.close();
     }
-    public void MenuClient() {
+    public void menuClient() {
         Scanner clavier = new Scanner(System.in);
         this.serviceClient = new ServiceClient();
         int choix;
@@ -103,7 +103,7 @@ public class ServiceMenu {
         } while (choix != 0);
         clavier.close();
     }
-    public void MenuChambre() {
+    public void menuChambre() {
         Scanner clavier = new Scanner(System.in);
         this.serviceChambre = new ServiceChambre();
         int choix;
@@ -135,7 +135,7 @@ public class ServiceMenu {
         } while (choix != 0);
         clavier.close();
     }
-    public void MenuReservation() {
+    public void menuReservation() {
         Scanner clavier = new Scanner(System.in);
         this.serviceReservation = new ServiceReservation();
         int choix;
