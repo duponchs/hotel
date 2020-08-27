@@ -94,7 +94,7 @@ public class Reservation {
     }
 
 
-    @ManyToMany(mappedBy = "reservations")
+    @ManyToMany(mappedBy = "reservations", fetch = FetchType.EAGER)
     public List<Chambre> getChambres() {
         return chambres;
     }

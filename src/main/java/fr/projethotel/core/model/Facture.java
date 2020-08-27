@@ -25,13 +25,17 @@ public class Facture {
             Font.BOLD);
 
     private static Client clientStatic;
-
+    private static Reservation reservationStatic;
     public static void GenerationFacturePDF(){
         Document document = new Document();
         ServiceClient serviceClient = new ServiceClient();
         ServiceReservation serviceReservation = new ServiceReservation();
-        serviceClient.rechercheDesReservations();
-        //Reservation reservation = serviceReservation.recherchePar();
+        //serviceClient.rechercheDesReservations();
+       // serviceReservation.afficherReservationsJour();
+        System.out.println();
+        //serviceClient.rechercheDesReservations();
+        clientStatic = serviceClient.rechercheDesReservationsPlusIntegrationClient();
+        reservationStatic = serviceReservation.rechercheReservationById();
         try {
             PdfWriter.getInstance(document, new FileOutputStream("Facture"+clientStatic.getId()+" "+".pdf"));
         } catch (DocumentException e) {
@@ -142,8 +146,8 @@ public class Facture {
        // table.addCell(new PdfPCell(new Phrase(""+client.getPrenom())));
         table.addCell(new PdfPCell(new Phrase("")));
 
-        table.addCell("");
-        table.addCell("");
+        table.addCell(""+reservationStatic.getId());
+        table.addCell(""+reservationStatic.getMontant());
 
 
 

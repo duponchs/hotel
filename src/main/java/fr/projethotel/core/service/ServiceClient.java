@@ -223,7 +223,7 @@ public class ServiceClient {
         Scanner clavier = new Scanner(System.in);
         List<Reservation> desReservations =null;
 
-        System.out.println("Quel est le client recherché dans la reservation ?");
+        System.out.println("Quel est le client recherché ?");
         Integer id = clavier.nextInt();
 
         desReservations = clientDAO.listSearchReservation(id);
@@ -232,14 +232,43 @@ public class ServiceClient {
             System.out.println("--------------------------------- Liste des Reservations du client recherché ---------------------------------------------------");
             for (Reservation reservation: desReservations) {
                 System.out.println("Numéro de reservation : "+reservation.getId());
-                System.out.println("hotel : "+ Utilitaire.getNomHotel());
+                System.out.println("hotel : "+ reservation.getIdHotel());
                 System.out.println("Prix : "+reservation.getMontant());
+                System.out.println("Date de Nuitée : "+reservation.getDateNuitee());
                 System.out.println("Nombre de personnes : "+reservation.getNbPersonne());
+                System.out.println("Client associe a la reservation : "+reservation.getClient().getId());
             }
             System.out.println("------------------------------------------------------------------------------------------------------------------");
         }else{
             logger.trace("aucune reservation pour ce client");
         }
+    }
+    public Client rechercheDesReservationsPlusIntegrationClient(){
+        Scanner clavier = new Scanner(System.in);
+        List<Reservation> desReservations =null;
+        Client client = null;
+        lectureClientsParNomPrenom();
+        System.out.println("Quel est le client recherché ?");
+        Integer id = clavier.nextInt();
+
+        desReservations = clientDAO.listSearchReservation(id);
+
+        if (desReservations != null){
+            System.out.println("--------------------------------- Liste des Reservations du client recherché ---------------------------------------------------");
+            for (Reservation reservation: desReservations) {
+                System.out.println("Numéro de reservation : "+reservation.getId());
+                System.out.println("hotel : "+ reservation.getIdHotel());
+                System.out.println("Prix : "+reservation.getMontant());
+                System.out.println("Date de Nuitée : "+reservation.getDateNuitee());
+                System.out.println("Nombre de personnes : "+reservation.getNbPersonne());
+                System.out.println("Client associe a la reservation : "+reservation.getClient().getId());
+            }
+            System.out.println("------------------------------------------------------------------------------------------------------------------");
+        }else{
+            logger.trace("aucune reservation pour ce client");
+        }
+        client = clientDAO.getById(id);
+        return client;
     }
     public void archiverClient(){
         Scanner clavier = new Scanner(System.in);

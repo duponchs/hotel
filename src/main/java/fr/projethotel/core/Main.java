@@ -17,13 +17,13 @@ public class Main {
 
 
 
-        ServiceHotel serviceHotel = new ServiceHotel();
+        //ServiceHotel serviceHotel = new ServiceHotel();
        // serviceHotel.ajouterHotel();
-        serviceHotel.getBynom();
-        ServiceChambre serviceChambre = new ServiceChambre();
-        serviceChambre.ajouterChambre();
-        System.out.println(serviceChambre.getCapaciteMax());
-        serviceChambre.getChambreDispo();
+        //serviceHotel.getBynom();
+        //ServiceChambre serviceChambre = new ServiceChambre();
+        //serviceChambre.ajouterChambre();
+        //System.out.println(serviceChambre.getCapaciteMax());
+        //serviceChambre.getChambreDispo();
 
 
 
