@@ -68,14 +68,33 @@ public class ServiceChambre {
 
     }
 
-    public void archiverChambre(){
-        //TODO
+    public Chambre trouverParNumero(){
+        Chambre chambre = null;
+        Scanner clavier = new Scanner(System.in);
+        System.out.println("Quel est le numero de chambre rechercher?");
+        Integer numero = clavier.nextInt();
+        chambre = chambreDAO.findChambreByNumero(numero);
 
+        return chambre;
     }
 
-    public  void deArchiverChambre(){
-        //TODO
+    public void archiverChambre(){
+        Scanner clavier = new Scanner(System.in);
 
+        System.out.println("Quel est le client à archiver ?");
+        System.out.println("Id ? :");
+        Integer numero = clavier.nextInt();
+        Chambre chambre = chambreDAO.findChambreByNumero(numero);
+        chambreDAO.setTrueStatusArchiver(chambre);
+    }
+    public void DesarchiverChambre(){
+        Scanner clavier = new Scanner(System.in);
+
+        System.out.println("Quel est le chambre à désarchiver ?");
+        System.out.println("Veuillez numero de la chambre ? :");
+        Integer numero = clavier.nextInt();
+        Chambre chambre = chambreDAO.findChambreByNumero(numero);
+        chambreDAO.setFalseStatusArchiver(chambre);
     }
 
     public  void supprimerChambre(){
@@ -92,10 +111,10 @@ public class ServiceChambre {
 
     public List<Chambre> getChambreDispo(){
         LocalDate date = null;
-        List <Chambre> chambresDispo = null;
+        List<Chambre> chambresDispo = null;
 
         Scanner clavier = new Scanner(System.in);
-        System.out.println("Veuillez reiseigner la date que vous voulez consulter");
+        System.out.println("Veuillez confirmez la date que vous voulez consulter");
         String dateString = clavier.nextLine();
         if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
              date = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)),
@@ -117,8 +136,6 @@ public class ServiceChambre {
 
         return chambresDispo;
     }
-
-
 
 
 }

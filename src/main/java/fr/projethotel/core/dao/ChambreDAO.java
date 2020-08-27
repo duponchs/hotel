@@ -44,6 +44,19 @@ public class ChambreDAO {
             logger.fatal(e.getMessage());
         }
     }
+
+    public Chambre findChambreByNumero(Integer numero){
+        Chambre chambre = null;
+            try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+                Query<Chambre> query = session.getNamedQuery("chambre.findByNumero");
+                query.setParameter("numero", numero);
+                query.setParameter("idHotel", Utilitaire.getIdHotel());
+                logger.trace("lu");
+            } catch (Throwable t) {
+                logger.fatal(t.getMessage());
+            }
+        return  chambre;
+    }
     
     public Long getCapaciteMax(){
        Long capaciteMaxHotel = null;
@@ -69,6 +82,7 @@ public class ChambreDAO {
         List<Chambre> lesChambresnotArchvied = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             Query<Chambre> query = session.getNamedQuery("chambre.findByNotArchiver");
+            query.setParameter("idHotel", Utilitaire.getIdHotel());
 
             try {
                 lesChambresnotArchvied = query.getResultList();
@@ -86,6 +100,8 @@ public class ChambreDAO {
         List<Chambre> lesChambresArchvied = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             Query<Chambre> query = session.getNamedQuery("chambre.findByArchiver");
+            query.setParameter("idHotel", Utilitaire.getIdHotel());
+
 
             try {
                 lesChambresArchvied = query.getResultList();
@@ -99,6 +115,37 @@ public class ChambreDAO {
 
         return lesChambresArchvied;
     }
+
+    public void setFalseStatusArchiver(Chambre chambre){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            chambre.setArchiver(false);
+            session.update(chambre);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
+    }
+
+    public void setTrueStatusArchiver(Chambre chambre){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            chambre.setArchiver(true);
+            session.update(chambre);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
+    }
+
 
     public List<Chambre> getChambreDispoAtDay(LocalDate date){
         List<Chambre> lesChambresDispo = null;
@@ -120,8 +167,5 @@ public class ChambreDAO {
             }
         return lesChambresDispo;
     }
-
-
-
 
 }

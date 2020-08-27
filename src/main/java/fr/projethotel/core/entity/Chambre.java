@@ -5,11 +5,14 @@ import java.util.List;
 
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"hotel_id", "numero"})})
 @NamedQueries({
         @NamedQuery(name = "chambre.findByArchiver",
-                query = "from Chambre c where c.archiver=true "),
+                query = "from Chambre c where c.archiver=true and c.hotel.id=:idHotel"),
         @NamedQuery(name = "chambre.findByNotArchiver",
-                query = "from Chambre c where c.archiver=false"),
+                query = "from Chambre c where c.archiver=false and c.hotel.id=:idHotel"),
+        @NamedQuery(name = "chambre.findByNumero",
+                query = "from Chambre c where c.numero=:numero and c.hotel.id=:idHotel"),
         @NamedQuery(name = "chambre.findCapaciteMax",
                 query = " SELECT count (*) from Chambre c where  c.archiver=false and c.hotel.id =:idHotel"),
 
@@ -59,7 +62,7 @@ public class Chambre {
         this.nbPersonneMax = nbPersonneMax;
     }
 
-    @Column(unique = true)
+
     public Integer getNumero() {
         return numero;
     }
@@ -69,6 +72,7 @@ public class Chambre {
     }
 
     @ManyToOne
+    @JoinColumn (name = "hotel_id")
     public Hotel getHotel() {
         return hotel;
     }
