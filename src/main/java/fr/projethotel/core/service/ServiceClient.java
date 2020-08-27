@@ -94,8 +94,12 @@ public class ServiceClient {
 
         System.out.println("--------------------------------- Liste des clients recherchés ---------------------------------------------------");
         for (Client client:desClients) {
-
-            System.out.println(client.getId()+" "+client.getNom()+" "+client.getPrenom()+" "+client.getDateNaissance()+" "+client.getEmail()+" "+client.getArchiver());
+            System.out.println("Id : "+client.getId());
+            System.out.println("Nom : "+client.getNom());
+            System.out.println(("Prenom : "+client.getPrenom()));
+            System.out.println("Date de naissance : "+ client.getDateNaissance());
+            System.out.println("Email : "+client.getEmail());
+            System.out.println("Archiver ? :"+client.getArchiver());
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
     }
@@ -238,9 +242,22 @@ public class ServiceClient {
         }
     }
     public void archiverClient(){
-        System.out.println("Quel est le client doit-être archiver ?");
-        //Client client =
-       // clientDAO.setTrueStatusArchiver();
+        Scanner clavier = new Scanner(System.in);
+        lectureClientsParNomPrenom();
+        System.out.println("Quel est le client à archiver ?");
+        System.out.println("Id ? :");
+        Integer id = clavier.nextInt();
+        Client client = clientDAO.getById(id);
+        clientDAO.setTrueStatusArchiver(client);
+    }
+    public void DesarchiverClient(){
+        Scanner clavier = new Scanner(System.in);
+        lectureClientsParNomPrenom();
+        System.out.println("Quel est le client à désarchiver ?");
+        System.out.println("Id ? :");
+        Integer id = clavier.nextInt();
+        Client client = clientDAO.getById(id);
+        clientDAO.setFalseStatusArchiver(client);
     }
 
     
