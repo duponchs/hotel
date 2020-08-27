@@ -222,7 +222,7 @@ public class ServiceClient {
         System.out.println("Quel est le client recherché dans la reservation ?");
         Integer id = clavier.nextInt();
 
-        desReservations = clientDAO.rechercheReservation(id);
+        desReservations = clientDAO.listSearchReservation(id);
 
         if (desReservations != null){
             System.out.println("--------------------------------- Liste des Reservations du client recherché ---------------------------------------------------");
@@ -236,6 +236,11 @@ public class ServiceClient {
         }else{
             logger.trace("aucune reservation pour ce client");
         }
+    }
+    public void archiverClient(){
+        System.out.println("Quel est le client doit-être archiver ?");
+        //Client client =
+       // clientDAO.setTrueStatusArchiver();
     }
 
     

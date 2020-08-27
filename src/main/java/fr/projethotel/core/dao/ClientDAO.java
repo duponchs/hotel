@@ -132,7 +132,32 @@ public class ClientDAO {
         return reservations;
     }
     public void setTrueStatusArchiver(Client client){
-
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            client.setArchiver(true);
+            session.update(client);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
+    }
+    public void setFalseStatusArchiver(Client client){
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            client.setArchiver(false);
+            session.update(client);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.fatal(e.getMessage());
+        }
     }
 
 }
