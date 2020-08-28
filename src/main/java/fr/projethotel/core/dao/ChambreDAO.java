@@ -45,12 +45,35 @@ public class ChambreDAO {
         }
     }
 
+    public void delete(Chambre chambre){
+        if (chambre!=null){
+            if(!chambre.getArchiver()){
+                Transaction transaction = null;
+                try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+                    transaction = session.beginTransaction();
+                    session.delete(chambre);
+                    transaction.commit();
+                } catch (Exception e) {
+                    if (transaction != null) {
+                        transaction.rollback();
+                    }
+                    logger.fatal(e.getMessage());
+                }
+            }else{
+                logger.trace("L'état  de la chambre est archivé, impossible de le supprimer pour le moment");
+            }
+        }else{
+            logger.trace("Une erreur sur la saisie du chambre est survenue");
+        }
+    }
+
     public Chambre findChambreByNumero(Integer numero){
         Chambre chambre = null;
             try(Session session = HibernateUtil.getSessionFactory().openSession()) {
                 Query<Chambre> query = session.getNamedQuery("chambre.findByNumero");
                 query.setParameter("numero", numero);
                 query.setParameter("idHotel", Utilitaire.getIdHotel());
+                chambre = query.getSingleResult();
                 logger.trace("lu");
             } catch (Throwable t) {
                 logger.fatal(t.getMessage());

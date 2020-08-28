@@ -47,7 +47,7 @@ public class ServiceChambre {
         System.out.println("--------------------------------- Liste des Chambres  non Archiver  ---------------------------------------------------");
         for (Chambre chambre:chambresNotArchived) {
 
-            System.out.println(chambre.getNumero() );
+            System.out.println(chambre.getNumero() +"  " + chambre.getId() );
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
         return chambresNotArchived;
@@ -75,14 +75,17 @@ public class ServiceChambre {
         Integer numero = clavier.nextInt();
         chambre = chambreDAO.findChambreByNumero(numero);
 
+        System.out.println(" numero chambre est :  "+ chambre.getNumero() + " l'identifiant est :  " + chambre.getId());
+
         return chambre;
+
     }
 
     public void archiverChambre(){
         Scanner clavier = new Scanner(System.in);
 
-        System.out.println("Quel est le client à archiver ?");
-        System.out.println("Id ? :");
+        System.out.println("Quel est le chambre à archiver ?");
+        System.out.println("Veuillez numero de la chambre ? ");
         Integer numero = clavier.nextInt();
         Chambre chambre = chambreDAO.findChambreByNumero(numero);
         chambreDAO.setTrueStatusArchiver(chambre);
@@ -98,7 +101,10 @@ public class ServiceChambre {
     }
 
     public  void supprimerChambre(){
-        //TODO
+
+        Chambre chambre = trouverParNumero();
+        chambreDAO.delete(chambre);
+
     }
 
     public Long getCapaciteMax(){

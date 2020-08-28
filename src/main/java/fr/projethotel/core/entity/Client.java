@@ -2,7 +2,7 @@ package fr.projethotel.core.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+
 
 
 @Entity
@@ -21,6 +21,7 @@ public class Client {
     private Boolean archiver = false;
 
     public Client() {
+
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

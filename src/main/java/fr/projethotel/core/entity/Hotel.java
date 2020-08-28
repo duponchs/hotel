@@ -2,7 +2,6 @@ package fr.projethotel.core.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +29,7 @@ public class Hotel {
         this.id = id;
     }
 
+    @Column(unique = true)
     public String getNom() {
         return nom;
     }
@@ -38,7 +38,7 @@ public class Hotel {
         this.nom = nom;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     public Set<Chambre> getChambres() {
         return chambres;
     }

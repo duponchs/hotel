@@ -23,8 +23,6 @@ public class ServiceMenu {
             System.out.println("--------- Gestion Transit'Air ----------------------");
             System.out.println();
             System.out.println("Ajouter un Hotel           : tapez 1");
-            System.out.println("Mettre à jour un Hotel     : tapez 2");
-            System.out.println("Supprimer un hôtel         : tapez 3");
             System.out.println("Sélectionner un Hotel      : tapez 4");
             System.out.println("----------------------------------------------------");
             System.out.println("quitter : tapez 0");
@@ -35,14 +33,12 @@ public class ServiceMenu {
                     break;
                 //case 2:
                 //    break;
-                //case 3:
-                //    break;
                 case 4: serviceHotel.getBynom();
                         menuGestionGenerale();
                 break;
             }
         } while (choix != 0);
-        clavier.close();
+
     }
     public void menuGestionGenerale() {
         Scanner clavier = new Scanner(System.in);
@@ -57,7 +53,7 @@ public class ServiceMenu {
             System.out.println("Gérer les réservations     : tapez 3");
             System.out.println("Facturation                : tapez 4");
             System.out.println("----------------------------------------------------");
-            System.out.println("quitter : tapez 0");
+            System.out.println("quitter  l'app : tapez 0");
             choix = clavier.nextInt();
             // Traitement du choix
             switch (choix) {
@@ -71,7 +67,7 @@ public class ServiceMenu {
                     break;
             }
         } while (choix != 0);
-        clavier.close();
+       System.exit(0);
     }
     public void menuClient() {
         Scanner clavier = new Scanner(System.in);
@@ -106,7 +102,7 @@ public class ServiceMenu {
                     break;
             }
         } while (choix != 0);
-        clavier.close();
+        menuGestionGenerale();
     }
     public void menuChambre() {
         Scanner clavier = new Scanner(System.in);
@@ -116,11 +112,13 @@ public class ServiceMenu {
             // Affichage du Menu tant que le choix est différent de 0
             System.out.println("--------- Gestion des chambres ----------------------");
             System.out.println();
-            System.out.println("Consulter les chambres disponibles  : tapez 1");
-            System.out.println("Ajouter une chambre                 : tapez 2");
-            System.out.println("Archiver une chambre                : tapez 3");
-            System.out.println("Désarchiver une chambre             : tapez 4");
-            System.out.println("Supprimer une chambre               : tapez 5");
+            System.out.println("Consulter les chambres disponibles            : tapez 1");
+            System.out.println("Ajouter une chambre                           : tapez 2");
+            System.out.println("Archiver une chambre                          : tapez 3");
+            System.out.println("Afficher les chambres archivées               : tapez 4");
+            System.out.println("Désarchiver une chambre                       : tapez 5");
+            System.out.println("Afficher les chambres non archivées           : tapez 8");
+            System.out.println("Supprimer une chambre                         : tapez 7");
             System.out.println("----------------------------------------------------");
             System.out.println("quitter : tapez 0");
             choix = clavier.nextInt();
@@ -138,7 +136,7 @@ public class ServiceMenu {
                     break;
             }
         } while (choix != 0);
-        clavier.close();
+        menuGestionGenerale();
     }
     public void menuReservation() {
         Scanner clavier = new Scanner(System.in);
@@ -170,7 +168,7 @@ public class ServiceMenu {
                     break;
             }
         } while (choix != 0);
-        clavier.close();
+        menuGestionGenerale();
     }
 }
 

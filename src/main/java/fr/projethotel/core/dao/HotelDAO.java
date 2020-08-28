@@ -1,7 +1,6 @@
 package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
-import fr.projethotel.core.entity.Client;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,7 @@ public class HotelDAO {
         Hotel hotel = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             hotel = session.get(Hotel.class,id);
-            logger.trace("client lu");
+            logger.trace("lu");
         } catch (Throwable t) {
             logger.fatal(t.getMessage());
         }
