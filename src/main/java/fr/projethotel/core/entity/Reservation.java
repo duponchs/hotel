@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "reservation.findByDate",
+       @NamedQuery(name = "reservation.findByDate",
             query = "from Reservation r where r.dateNuitee=:dateNuitee"),
         @NamedQuery(name = "reservation.findByClientDate",
             query = "from Reservation r where r.dateNuitee=:dateNuitee and r.client =:client")
@@ -94,7 +94,7 @@ public class Reservation {
     }
 
 
-    @ManyToMany(mappedBy = "reservations", fetch = FetchType.EAGER)
+    @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public List<Chambre> getChambres() {
         return chambres;
     }

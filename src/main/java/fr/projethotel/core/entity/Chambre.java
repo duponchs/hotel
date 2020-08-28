@@ -89,7 +89,7 @@ public class Chambre {
         this.prix = prix;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "chambres")
     public List<Reservation> getReservations() {
         return reservations;
     }

@@ -10,6 +10,7 @@ import fr.projethotel.core.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,7 +29,7 @@ public class ServiceReservation {
         this.serviceClient = new ServiceClient();
         this.serviceChambre = new ServiceChambre();
     }
-
+    //Méthode d'ajout d'une réservation
     public  void  ajouterReservation(){
         Integer nbChambresOccupees = 0;
         Integer nbChambresVoulues = 0;
@@ -49,6 +50,7 @@ public class ServiceReservation {
         if (client != null) {
             //Saisie du nombre de personnes
             nbPersonne = saisieNbPersonne();
+            System.out.println("nbPersonne"+nbPersonne);
             if (nbPersonne > 0) {
                 //Calcul du nombre de chambres nécessaires
                 nbChambresVoulues = calculNbChambresVoulues(nbPersonne);
@@ -78,23 +80,23 @@ public class ServiceReservation {
             }
         }
     }
-
+    //Méthode pour passer une réservation à l'état facturable
     public void facturerReservation(){
         Reservation reservation;
      // selectionner une reservation (par client et date)
         reservation = rechercherReservation();
      // passage de l'état de la reservation à payée
-        reservation.setEtat("P"); //domaine de valeur : C = crée, P = payée
+        System.out.println(reservation.getEtat());
         reservationDAO.update(reservation);
      // mise à jour du client qui passe en archivé
         clientDAO.setTrueStatusArchiver(reservation.getClient());
 }
-
+    //Méthode pour assigner une ou plusieurs chambres à une reservation
     public void assignerChambres(){
         Reservation reservation;
         Integer nbChambres;
         List<Chambre> lesChambresDispo = null;
-        List<Chambre> lesChambresAttribuees = null;
+        List<Chambre> lesChambresAttribuees = new ArrayList<>();
         Integer increment = 0;
         Integer numeroChambre;
         Scanner clavier = new Scanner(System.in);
@@ -110,27 +112,33 @@ public class ServiceReservation {
         nbChambres = calculNbChambresVoulues(reservation.getNbPersonne());
         do{
             //Saisie d'un numero de chambre
-            System.out.println("Veuillez saisir une chambre : "+(increment+1)+ "sur "+nbChambres);
+            System.out.println("Veuillez saisir une chambre : "+(increment+1)+ " sur "+nbChambres);
             numeroChambre = clavier.nextInt();
             //On récupère la chambre correspondant au numero saisi
             for (Chambre c:lesChambresDispo) {
                 if (numeroChambre == c.getNumero()) {
                     chambreASAuvegarder = c;
+                    lesChambresAttribuees.add(chambreASAuvegarder);
+                    increment++;
                 }
             }
-            //alimentation de la liste les ChambresAttribuees
-            lesChambresAttribuees.add(chambreASAuvegarder);
-            increment++;
         }
         while (increment < nbChambres);
+        System.out.println("Récapitulatif des chambres attribuées");
+        for (Chambre c2:lesChambresAttribuees) {
+            System.out.println("chambre numéro "+c2.getNumero()+" Id : "+c2.getId());
+        }
         // mise à jour de la reservation : ajout de la liste des chambres et modification etat
         reservation.setEtat("P"); //domaine de valeur : C = crée, P = payée
         reservation.setChambres(lesChambresAttribuees);
+        for (Chambre c3:reservation.getChambres()) {
+            System.out.println("chambre numéro X "+c3.getNumero()+" Id : "+c3.getId());
+        }
         reservationDAO.update(reservation);
         // mise à jour du client qui passe en archivé
         clientDAO.setTrueStatusArchiver(reservation.getClient());
     }
-
+    //Méthode pour afficher les réservation à une date donnée en entrée
     public void afficherReservationsJour(){
         LocalDate dateNuitee;
         List<Reservation> desReservations =null;
@@ -158,7 +166,7 @@ public class ServiceReservation {
     }
 
 
-
+    //Méthode pour supprimer une réservation
     public void supprimerReservation(){
         Reservation reservation = null;
         LocalDate dateNuitee;
@@ -172,13 +180,14 @@ public class ServiceReservation {
         }
 
     }
-
+    //Méthode pour récupérer une réservation avec choix du client et de la date de réservation
     public Reservation rechercherReservation(){
         Client client = null;
         Reservation reservation = null;
         LocalDate dateNuitee;
         //Recherche du client détenant la réservation
         client = rechercheClient();
+        System.out.println("marqueur test");
         //Saisie de la date de nuitée de la réservation à annuler
         if (client != null) {
             dateNuitee = saisieDateNuitee();
@@ -190,7 +199,7 @@ public class ServiceReservation {
         }
     return reservation;
     }
-
+    //Méthode pour récupérer une réservation par son id en entrée
     public Reservation rechercheReservationById(){
         Scanner clavier = new Scanner(System.in);
         Reservation reservation = null;
@@ -199,7 +208,7 @@ public class ServiceReservation {
         reservation = reservationDAO.getReservationById(id);
         return reservation;
     }
-
+    //Méthode pour afficher une liste de client selon nom et prénom
     public Client rechercheClient() {
         serviceClient.lectureClientsParNomPrenom();
         Client client = serviceClient.lectureClientParId();
@@ -212,48 +221,47 @@ public class ServiceReservation {
         }
         return client;
     }
-
+    //Méthode pour saisir et enregistrer le nombre de personnes voulues pour une réservation
     public Integer saisieNbPersonne(){
+        int saisie;
         Scanner clavier = new Scanner(System.in);
         System.out.println("Combien de personnes  ?");
-        if (clavier.nextInt() < 1) {
-            logger.fatal("Saisir au moins une personne");
-        }
-        return clavier.nextInt();
+        saisie = clavier.nextInt();
+        return saisie;
     }
-
+    //Méthode pour calculer le nombre de chambres nécessaires en fonction du nombre de personnes voulues
     public Integer calculNbChambresVoulues(int i){
         double divisionChambre;
-        Integer nbPlaceMax;
+        double nbPlaceMax;
         nbPlaceMax = 3;
         divisionChambre = (i /nbPlaceMax);
         return (int)(Math.ceil(divisionChambre));
     }
-
+    //méthode pour saisir et enregistrer la date de réservation
     public LocalDate saisieDateNuitee(){
         Scanner clavier = new Scanner(System.in);
-        System.out.println("Saisir la date au format JJ/MM/YYYY) ");
+        System.out.println("Saisir la date au format JJ-MM-AAAA) ");
         String dateString = clavier.nextLine();
-        if(dateString.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})")) {
+        if(dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
             return LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));}
         else {
             logger.fatal("Une erreur de saisie sur la date est survenue");
             return null;
         }
     }
-
+    //Méthode pour récupérer la capacité de l'hotel
     public Long rechercheCapaciteHotel(){
         Long resultat;
         resultat =serviceChambre.getCapaciteMax();
         return resultat;
     }
-
+    //méthode pour récupérer le nombre de chambres libres
     public Integer rechercheNbChambresLibres(LocalDate d){
         Integer resultat;
         resultat = (chambreDAO.getChambreDispoAtDay(d)).size();
         return resultat;
     }
-
+    //Méthode pour vérifier si il reste assez de chambres libres
     public Boolean verificationNbChambreSuffisant(int libres, int voulues){
 
         if (libres >= voulues ){
@@ -265,33 +273,41 @@ public class ServiceReservation {
             return false;
         }
     }
-
+    //méthode pour calculer le montant de la réservation
     public Float calculMontantReservation(Long capacite, int libres, int voulues){
-      Float resultat;
-      Float tarifUnitaire;
-      Float pourcentageOccupation = 0f;
-      Float majoration = 0f;
-      long occupe = 0;
-      double trancheOccupation;
-      tarifUnitaire = (50.0f);
+        Float resultat;
+        Float tarifUnitaire;
+        Float pourcentageOccupation = 0f;
+        Float majoration = 0f;
+        long occupe = 0;
+        double trancheOccupation;
+        tarifUnitaire = (50.0f);
+        System.out.println("capacite "+capacite);
+        System.out.println("libres "+libres);
+        System.out.println("voulues"+voulues);
+        occupe = (capacite - libres);
+        System.out.println("occupe "+occupe);
+        pourcentageOccupation = (float)(occupe/capacite*100);
+        System.out.println("pourcentageOccupation "+pourcentageOccupation);
+        trancheOccupation = Math.floor(pourcentageOccupation/10);
+        System.out.println("trancheOccupation "+trancheOccupation);
+        majoration = (float) (trancheOccupation*tarifUnitaire*0.1);
+        System.out.println("majoration " + majoration);
 
-      occupe = (capacite - libres);
-      pourcentageOccupation = (float)(occupe/capacite*100);
-      trancheOccupation = Math.floor(pourcentageOccupation/10);
-      majoration = (float) (trancheOccupation*tarifUnitaire*0.1);
-
-      resultat = ((tarifUnitaire * voulues)+ majoration);
-      System.out.println("Prix de la réservation : "+resultat+" Euros");
-      return resultat;
+        resultat = ((tarifUnitaire * voulues)+ majoration);
+        System.out.println("resultat montant " +resultat);
+        System.out.println("Prix de la réservation : "+resultat+" Euros");
+        return resultat;
     }
-
+    //Méthode pour saisir et enregistrer le numéro de carte bleue
     public Integer saisieNumeroCb(){
         Scanner clavier = new Scanner(System.in);
-        System.out.println("Combien de personnes  ?");
+        System.out.println("Veuillez saisir un numéro de CB?");
         Integer numero = clavier.nextInt();
         return numero;
     }
 
+    //Méthode pour valider une transaction
     public Boolean saisieValidation(){
         Scanner clavier = new Scanner(System.in);
         String choix;
@@ -313,6 +329,7 @@ public class ServiceReservation {
         } while (choix != "O" && choix != "N");
     }
 
+    // Méthode pour enregistrer une réservation
     public void enregistrerReservation(Client client, Integer nbPersonne, Float montantReservation, Integer numeroCb, LocalDate dateNuitee){
         this.reservationDAO = new ReservationDAO();
         Reservation reservation = new Reservation();
