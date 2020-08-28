@@ -23,7 +23,8 @@ public class ServiceMenu {
             System.out.println("--------- Gestion Transit'Air ----------------------");
             System.out.println();
             System.out.println("Ajouter un Hotel           : tapez 1");
-            System.out.println("Sélectionner un Hotel      : tapez 4");
+            System.out.println("Mofidier un Hotel          : tapez 2");
+            System.out.println("Sélectionner un Hotel      : tapez 3");
             System.out.println("----------------------------------------------------");
             System.out.println("quitter : tapez 0");
             choix = clavier.nextInt();
@@ -31,9 +32,9 @@ public class ServiceMenu {
             switch (choix) {
                 case 1: serviceHotel.ajouterHotel();
                     break;
-                //case 2:
-                //    break;
-                case 4: serviceHotel.getBynom();
+                case 2:serviceHotel.modifier();
+                    break;
+                case 3: serviceHotel.getBynom();
                         menuGestionGenerale();
                 break;
             }
@@ -117,7 +118,7 @@ public class ServiceMenu {
             System.out.println("Archiver une chambre                          : tapez 3");
             System.out.println("Afficher les chambres archivées               : tapez 4");
             System.out.println("Désarchiver une chambre                       : tapez 5");
-            System.out.println("Afficher les chambres non archivées           : tapez 8");
+            System.out.println("Afficher les chambres non archivées           : tapez 6");
             System.out.println("Supprimer une chambre                         : tapez 7");
             System.out.println("----------------------------------------------------");
             System.out.println("quitter : tapez 0");
@@ -130,9 +131,13 @@ public class ServiceMenu {
                     break;
                 case 3: serviceChambre.archiverChambre();
                     break;
-                case 4: serviceChambre.DesarchiverChambre();
+                case 4: serviceChambre.voirChambreArchiver();
                     break;
-                case 5: serviceChambre.supprimerChambre();
+                case 5: serviceChambre.DesarchiverChambre();
+                    break;
+                case 6: serviceChambre.voirChambreNonArchiver();
+                    break;
+                case 7: serviceChambre.supprimerChambre();
                     break;
             }
         } while (choix != 0);

@@ -1,7 +1,9 @@
 package fr.projethotel.core.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,10 +15,10 @@ public class Hotel {
 
     private Integer id;
     private String nom;
-    private Set<Chambre> chambres;
+    private List<Chambre> chambres;
 
     public Hotel() {
-        this.chambres = new HashSet<Chambre>();
+        this.chambres = new ArrayList<>();
     }
 
     @Id
@@ -38,12 +40,12 @@ public class Hotel {
         this.nom = nom;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    public Set<Chambre> getChambres() {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "hotel")
+    public List<Chambre> getChambres() {
         return chambres;
     }
 
-    public void setChambres(Set<Chambre> chambres) {
+    public void setChambres(List<Chambre> chambres) {
         this.chambres = chambres;
     }
 }
