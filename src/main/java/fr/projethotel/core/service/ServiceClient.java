@@ -44,10 +44,11 @@ public class ServiceClient {
         }
     }
 
+    //---------- fourni un client par son identitfiant ----//
     public Client lectureClientParId() {
         Client client = null;
         Scanner clavier = new Scanner(System.in);
-        System.out.println("Quel est l'identifiant du client recherché ?");
+        System.out.println("Quel est l'identifiant du client recherché ? (0) si pas de client");
         Integer id = clavier.nextInt();
         client = clientDAO.getById(id);
         return client;
@@ -77,7 +78,8 @@ public class ServiceClient {
         }
         return client;
     }
-    public void lectureClientsParNomPrenom() {
+    //---------- affiche clients en entrant nom prenom ----//
+    public Boolean lectureClientsParNomPrenom() {
         Scanner clavier = new Scanner(System.in);
         List<Client> desClients =null;
 
@@ -86,17 +88,24 @@ public class ServiceClient {
         System.out.println("Quel est le prenom du client recherché ?");
         String prenom = clavier.nextLine();
         desClients = clientDAO.getListByNomPrenom(nom,prenom);
-
-        System.out.println("--------------------------------- Liste des clients recherchés ---------------------------------------------------");
-        for (Client client:desClients) {
-            System.out.println("Id : "+client.getId());
-            System.out.println("Nom : "+client.getNom());
-            System.out.println(("Prenom : "+client.getPrenom()));
-            System.out.println("Date de naissance : "+ client.getDateNaissance());
-            System.out.println("Email : "+client.getEmail());
-            System.out.println("Archiver ? :"+client.getArchiver());
+        if (desClients.size() != 0 ){
+            System.out.println("--------------------------------- Liste des clients recherchés ---------------------------------------------------");
+            for (Client client:desClients) {
+                System.out.println("Id : "+client.getId());
+                System.out.println("Nom : "+client.getNom());
+                System.out.println(("Prenom : "+client.getPrenom()));
+                System.out.println("Date de naissance : "+ client.getDateNaissance());
+                System.out.println("Email : "+client.getEmail());
+                System.out.println("Archiver ? :"+client.getArchiver());
+            }
+            System.out.println("------------------------------------------------------------------------------------------------------------------");
+            return true;
+        }else{
+            System.out.println();
+            System.out.println("Il n'y a pas client a ce nom, prenom.");
+            System.out.println();
+            return false;
         }
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
     }
     public void effacerClientFullDetails() {
         Client client = null;
@@ -137,34 +146,39 @@ public class ServiceClient {
         }
     }
     public void effacerClient() {
-        lectureClientsParNomPrenom();
+        boolean unTruc = lectureClientsParNomPrenom();
         Client client = null;
         Client clientOk = null;
         Scanner clavier = new Scanner(System.in);
-        client = lectureClientParId();
-        Character choix;
+        //---------- appel la methode pour recuperer un client par son id ----//
+        if(unTruc){
+            client = lectureClientParId();
+            Character choix;
 
-        if(client!=null){
-            System.out.println("Le client supprimé est id : "
-                    + client.getId() + " nom  "
-                    + client.getNom() + " prenom "
-                    + client.getPrenom()+" date de naissance "
-                    + client.getDateNaissance()+" email "
-                    + client.getEmail()
-            );
-            do{
-                System.out.println("Êtes-vous sûr de bien vouloir supprimer ce client ? (y/n)");
-                choix = clavier.nextLine().toLowerCase().charAt(0);
-            }while(choix != 'y' && choix!= 'n');
+            if(client!=null){
+                System.out.println("Le client supprimé est id : "
+                        + client.getId() + " nom  "
+                        + client.getNom() + " prenom "
+                        + client.getPrenom()+" date de naissance "
+                        + client.getDateNaissance()+" email "
+                        + client.getEmail()
+                );
+                //---------- Confirmation de suppr un client par son id ----//
+                do{
+                    System.out.println("Êtes-vous sûr de bien vouloir supprimer ce client ? (y/n)");
+                    choix = clavier.nextLine().toLowerCase().charAt(0);
+                }while(choix != 'y' && choix!= 'n');
 
-            if(choix=='y')
-                clientDAO.delete(client);
-            else
-                System.out.println("Abandon de suppression");
+                if(choix=='y')
+                    clientDAO.delete(client);
+                else
+                    System.out.println("Abandon de suppression");
+            }else{
+                logger.fatal("Client non reconnue");
+            }
         }else{
-            logger.fatal("Client non reconnue");
+            logger.trace("Pas de client a ce nom prenom");
         }
-
     }
 
     public void miseAJourClientFullDetails() {
@@ -196,7 +210,6 @@ public class ServiceClient {
                     client.setPrenom(prenom);
                     client.setDateNaissance(dateNaissance);
                     client.setEmail(email);
-                    //todo : Voir ici pour désarchiver ??
 
                     clientDAO.update(client);
                 }else{
@@ -210,39 +223,41 @@ public class ServiceClient {
         }
     }
     public void miseAJourClientChoixDansListClients() {
-        lectureClientsParNomPrenom();
+        Boolean unTruc = lectureClientsParNomPrenom();
         Client client = null;
         Client clientOk = null;
         Scanner clavier = new Scanner(System.in);
+        if(unTruc){
+            client = lectureClientParId();
 
-        client = lectureClientParId();
+            if(client != null){
+                clientOk = client;
+                System.out.println("Quel est le nouveau nom du client ?");
+                String nom = clavier.nextLine();
+                System.out.println("Quel est le nouveau prenom du client ?");
+                String prenom = clavier.nextLine();
+                System.out.println("Quel est la nouvelle date de naissance du client ? (JJ-MM-YYYY) ");
+                String dateString = clavier.nextLine();
+                if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
 
-        if(client != null){
-            clientOk = client;
-            System.out.println("Quel est le nouveau nom du client ?");
-            String nom = clavier.nextLine();
-            System.out.println("Quel est le nouveau prenom du client ?");
-            String prenom = clavier.nextLine();
-            System.out.println("Quel est la nouvelle date de naissance du client ? (JJ-MM-YYYY) ");
-            String dateString = clavier.nextLine();
-            if (dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
+                    LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
 
-                LocalDate dateNaissance = LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));
+                    System.out.println("Quel est la nouvelle adresse mail du client ?");
+                    String email = clavier.nextLine();
+                    client.setNom(nom);
+                    client.setPrenom(prenom);
+                    client.setDateNaissance(dateNaissance);
+                    client.setEmail(email);
 
-                System.out.println("Quel est la nouvelle adresse mail du client ?");
-                String email = clavier.nextLine();
-                client.setNom(nom);
-                client.setPrenom(prenom);
-                client.setDateNaissance(dateNaissance);
-                client.setEmail(email);
-                //todo : Voir ici pour désarchiver ??
-
-                clientDAO.update(client);
-            }else{
-                logger.info("Une erreur de saisie sur la date de naissance est survenue");
+                    clientDAO.update(client);
+                }else{
+                    logger.info("Une erreur de saisie sur la date de naissance est survenue");
+                }
+            } else{
+                logger.trace("Pas de client avec cette identifiant");
             }
-        } else{
-            logger.trace("Pas de client avec cette identifiant");
+        }else{
+            logger.trace("Pas de client a ce nom prenom");
         }
     }
     public void rechercheDesReservations(){
@@ -298,22 +313,29 @@ public class ServiceClient {
     }
     public void archiverClient(){
         Scanner clavier = new Scanner(System.in);
-        lectureClientsParNomPrenom();
-        System.out.println("Quel est le client à archiver ?");
-        System.out.println("Id ? :");
-        Integer id = clavier.nextInt();
-        Client client = clientDAO.getById(id);
-        clientDAO.setTrueStatusArchiver(client);
-    }
-    public void DesarchiverClient(){
-        Scanner clavier = new Scanner(System.in);
-        lectureClientsParNomPrenom();
-        System.out.println("Quel est le client à désarchiver ?");
-        System.out.println("Id ? :");
-        Integer id = clavier.nextInt();
-        Client client = clientDAO.getById(id);
-        clientDAO.setFalseStatusArchiver(client);
+        Boolean unTruc = lectureClientsParNomPrenom();
+        if(unTruc){
+            System.out.println("Quel est le client à archiver ?");
+            System.out.println("Id ? :");
+            Integer id = clavier.nextInt();
+            Client client = clientDAO.getById(id);
+            clientDAO.setTrueStatusArchiver(client);
+        }else{
+            logger.trace("Pas de client a ce nom prenom");
+        }
     }
 
-    
+    public void DesarchiverClient(){
+        Scanner clavier = new Scanner(System.in);
+        Boolean unTruc =lectureClientsParNomPrenom();
+        if(unTruc){
+            System.out.println("Quel est le client à désarchiver ?");
+            System.out.println("Id ? :");
+            Integer id = clavier.nextInt();
+            Client client = clientDAO.getById(id);
+            clientDAO.setFalseStatusArchiver(client);
+        }else{
+            logger.trace("Pas de client a ce nom prenom");
+        }
+    }
 }
