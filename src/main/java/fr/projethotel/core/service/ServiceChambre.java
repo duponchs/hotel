@@ -47,7 +47,7 @@ public class ServiceChambre {
         System.out.println("--------------------------------- Liste des Chambres  non Archiver  ---------------------------------------------------");
         for (Chambre chambre:chambresNotArchived) {
 
-            System.out.println(chambre.getNumero() +"  " + chambre.getId() );
+            System.out.println("La chambre numero : " + chambre.getNumero()  );
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
         return chambresNotArchived;
@@ -60,7 +60,7 @@ public class ServiceChambre {
         System.out.println("--------------------------------- Liste des Chambres Archiver  ---------------------------------------------------");
         for (Chambre chambre:chambresArchived) {
 
-            System.out.println(chambre.getNumero() );
+            System.out.println("La chambre numero : " + chambre.getNumero() );
         }
         System.out.println("------------------------------------------------------------------------------------------------------------------");
 
