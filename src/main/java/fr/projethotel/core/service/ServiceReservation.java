@@ -50,7 +50,6 @@ public class ServiceReservation {
         if (client != null) {
             //Saisie du nombre de personnes
             nbPersonne = saisieNbPersonne();
-            System.out.println("nbPersonne"+nbPersonne);
             if (nbPersonne > 0) {
                 //Calcul du nombre de chambres nécessaires
                 nbChambresVoulues = calculNbChambresVoulues(nbPersonne);
@@ -86,7 +85,6 @@ public class ServiceReservation {
      // selectionner une reservation (par client et date)
         reservation = rechercherReservation();
      // passage de l'état de la reservation à payée
-        System.out.println(reservation.getEtat());
         reservationDAO.update(reservation);
      // mise à jour du client qui passe en archivé
         clientDAO.setTrueStatusArchiver(reservation.getClient());
@@ -109,7 +107,9 @@ public class ServiceReservation {
         lesChambresDispo = serviceChambre.getChambreDispo();
 
         // création de la liste de chambre(s) à assigner
+
         nbChambres = calculNbChambresVoulues(reservation.getNbPersonne());
+
         do{
             //Saisie d'un numero de chambre
             System.out.println("Veuillez saisir une chambre : "+(increment+1)+ " sur "+nbChambres);
@@ -131,9 +131,6 @@ public class ServiceReservation {
         // mise à jour de la reservation : ajout de la liste des chambres et modification etat
         reservation.setEtat("P"); //domaine de valeur : C = crée, P = payée
         reservation.setChambres(lesChambresAttribuees);
-        for (Chambre c3:reservation.getChambres()) {
-            System.out.println("chambre numéro X "+c3.getNumero()+" Id : "+c3.getId());
-        }
         reservationDAO.update(reservation);
         // mise à jour du client qui passe en archivé
         clientDAO.setTrueStatusArchiver(reservation.getClient());
@@ -187,7 +184,6 @@ public class ServiceReservation {
         LocalDate dateNuitee;
         //Recherche du client détenant la réservation
         client = rechercheClient();
-        System.out.println("marqueur test");
         //Saisie de la date de nuitée de la réservation à annuler
         if (client != null) {
             dateNuitee = saisieDateNuitee();
@@ -240,7 +236,7 @@ public class ServiceReservation {
     //méthode pour saisir et enregistrer la date de réservation
     public LocalDate saisieDateNuitee(){
         Scanner clavier = new Scanner(System.in);
-        System.out.println("Saisir la date au format JJ-MM-AAAA) ");
+        System.out.println("Saisir la date au format JJ-MM-AAAA ");
         String dateString = clavier.nextLine();
         if(dateString.matches("([0-9]{2})-([0-9]{2})-([0-9]{4})")) {
             return LocalDate.of(Integer.valueOf(dateString.substring(6, 10)), Integer.valueOf(dateString.substring(3, 5)), Integer.valueOf(dateString.substring(0, 2)));}
@@ -282,21 +278,21 @@ public class ServiceReservation {
         long occupe = 0;
         double trancheOccupation;
         tarifUnitaire = (50.0f);
-        System.out.println("capacite "+capacite);
-        System.out.println("libres "+libres);
-        System.out.println("voulues"+voulues);
+        //System.out.println("capacite "+capacite);
+        //System.out.println("libres "+libres);
+        //System.out.println("voulues"+voulues);
         occupe = (capacite - libres);
-        System.out.println("occupe "+occupe);
+        //System.out.println("occupe "+occupe);
         pourcentageOccupation = (float)(occupe/capacite*100);
-        System.out.println("pourcentageOccupation "+pourcentageOccupation);
+        //System.out.println("pourcentageOccupation "+pourcentageOccupation);
         trancheOccupation = Math.floor(pourcentageOccupation/10);
-        System.out.println("trancheOccupation "+trancheOccupation);
+        //System.out.println("trancheOccupation "+trancheOccupation);
         majoration = (float) (trancheOccupation*tarifUnitaire*0.1);
-        System.out.println("majoration " + majoration);
+        //System.out.println("majoration " + majoration);
 
         resultat = ((tarifUnitaire * voulues)+ majoration);
-        System.out.println("resultat montant " +resultat);
-        System.out.println("Prix de la réservation : "+resultat+" Euros");
+        //System.out.println("resultat montant " +resultat);
+        //System.out.println("Prix de la réservation : "+resultat+" Euros");
         return resultat;
     }
     //Méthode pour saisir et enregistrer le numéro de carte bleue
