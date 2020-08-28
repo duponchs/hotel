@@ -1,16 +1,16 @@
 package fr.projethotel.core.service;
 
-import fr.projethotel.core.HibernateUtil;
+
 import fr.projethotel.core.Utilitaire;
 import fr.projethotel.core.dao.HotelDAO;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 
-import java.util.List;
+
+
+
 import java.util.Scanner;
 
 public class ServiceHotel {
@@ -28,11 +28,8 @@ public class ServiceHotel {
         String nom = clavier.nextLine();
 
         Hotel hotel = new Hotel();
-
         hotel.setNom(nom);
-
         hotelDAO.create(hotel);
-
 
     }
 
@@ -53,6 +50,18 @@ public class ServiceHotel {
         return hotel;
 
     }
+
+    public void modifier(){
+
+        Hotel hotel = getBynom();
+        Scanner clavier = new Scanner(System.in);
+        System.out.println("Veuillez rentrer le nouveau nom de l'hotel");
+        String nom = clavier.nextLine();
+        hotel.setNom(nom);
+        hotelDAO.update(hotel);
+
+    }
+
 
 
 

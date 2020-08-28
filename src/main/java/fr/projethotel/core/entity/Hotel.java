@@ -38,7 +38,7 @@ public class Hotel {
         this.nom = nom;
     }
 
-    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     public Set<Chambre> getChambres() {
         return chambres;
     }

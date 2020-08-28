@@ -71,7 +71,7 @@ public class Chambre {
         this.numero = numero;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "hotel_id")
     public Hotel getHotel() {
         return hotel;

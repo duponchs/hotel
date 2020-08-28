@@ -1,6 +1,7 @@
 package fr.projethotel.core.dao;
 
 import fr.projethotel.core.HibernateUtil;
+import fr.projethotel.core.entity.Chambre;
 import fr.projethotel.core.entity.Hotel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,6 +39,20 @@ public class HotelDAO {
             logger.fatal(t.getMessage());
         }
         return hotel;
+    }
+
+    public void delete(Hotel hotel){
+                Transaction transaction = null;
+                try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+                    transaction = session.beginTransaction();
+                    session.delete(hotel);
+                    transaction.commit();
+                } catch (Exception e) {
+                    if (transaction != null) {
+                        transaction.rollback();
+                    }
+                    logger.fatal(e.getMessage());
+                }
     }
 
     public Hotel getByNom(String nom){
